@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>다음 지도 API</title>
+</head>
+<body>
+	<div id="map" style="width:750px;height:350px;"></div>
+
+	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805"></script>
+	<script>
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		    mapOption = {
+		        center: new kakao.maps.LatLng(37.57032, 126.98125), // 지도의 중심좌표
+		        level: 5, // 지도의 확대 레벨
+		        mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
+		    }; 
+
+		// 지도를 생성한다 
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+		// 지도 중심 좌표 변화 이벤트를 등록한다
+		kakao.maps.event.addListener(map, 'center_changed', function () {
+			console.log('지도의 중심 좌표는 ' + map.getCenter().toString() +' 입니다.');
+		});
+
+		// 지도 확대 레벨 변화 이벤트를 등록한다
+		kakao.maps.event.addListener(map, 'zoom_changed', function () {
+			console.log('지도의 현재 확대레벨은 ' + map.getLevel() +'레벨 입니다.');
+		});
+
+		// 지도 영역 변화 이벤트를 등록한다
+		kakao.maps.event.addListener(map, 'bounds_changed', function () {
+			var mapBounds = map.getBounds(),
+				message = '지도의 남서쪽, 북동쪽 영역좌표는 ' +
+							mapBounds.toString() + '입니다.';
+
+			console.log(message);	
+		});
+
+		// 지도 시점 변화 완료 이벤트를 등록한다
+		kakao.maps.event.addListener(map, 'idle', function () {
+			var message = '지도의 중심좌표는 ' + map.getCenter().toString() + ' 이고,' + 
+							'확대 레벨은 ' + map.getLevel() + ' 레벨 입니다.';
+			console.log(message);
+		});
+
+		chargespot_list = {{chargespot_list}}
+		// chargespot_list_lat = {{chargespot_list.0.lat}}
+		// chargespot_list_lng = {{chargespot_list.0.lng}}
+		console.log(chargespot_list)
+		// 커스텀 오버레이를 생성하고 지도에 표시한다
+		// var customOverlay = new kakao.maps.CustomOverlay({
+		// 	map: map,
+		// 	content: '<div style="padding:0 5px;background:#fff;">HTML코드를 입력해주세요 :D</div>', 
+		// 	position: new kakao.maps.LatLng(chargespot_list_lat, chargespot_list_lng), // 커스텀 오버레이를 표시할 좌표
+		// 	xAnchor:  chargespot_list_lat, // 컨텐츠의 x 위치
+		// 	yAnchor:  chargespot_list_lng   // 컨텐츠의 y 위치
+		// });
+
+	</script>
+</body>
+</html>
