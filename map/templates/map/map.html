@@ -45,14 +45,18 @@
 			console.log(message);
 		});
 
+		chargespot_list = {{chargespot_list}}
+		// chargespot_list_lat = {{chargespot_list.0.lat}}
+		// chargespot_list_lng = {{chargespot_list.0.lng}}
+		console.log(chargespot_list)
 		// 커스텀 오버레이를 생성하고 지도에 표시한다
-		var customOverlay = new kakao.maps.CustomOverlay({
-			map: map,
-			content: '<div style="padding:0 5px;background:#fff;">HTML코드를 입력해주세요 :D</div>', 
-			position: new kakao.maps.LatLng(37.56682, 126.97865), // 커스텀 오버레이를 표시할 좌표
-			xAnchor: 0.5, // 컨텐츠의 x 위치
-			yAnchor: 0 // 컨텐츠의 y 위치
-		});
+		// var customOverlay = new kakao.maps.CustomOverlay({
+		// 	map: map,
+		// 	content: '<div style="padding:0 5px;background:#fff;">HTML코드를 입력해주세요 :D</div>', 
+		// 	position: new kakao.maps.LatLng(chargespot_list_lat, chargespot_list_lng), // 커스텀 오버레이를 표시할 좌표
+		// 	xAnchor:  chargespot_list_lat, // 컨텐츠의 x 위치
+		// 	yAnchor:  chargespot_list_lng   // 컨텐츠의 y 위치
+		// });
 
 	</script>
 </body>
