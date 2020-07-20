@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>다음 지도 API</title>
+	<meta charset="utf-8"/>
+	<title>Kakao 지도 시작하기</title>
 </head>
 <body>
-	<div id="map" style="width:750px;height:350px;"></div>
-
-	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805"></script>
+	<div id="map" style="width:1000px;height:800px;"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
 	<script>
+<<<<<<< HEAD
 
 
 		chargespot_list_lat = {{chargespot_list.0.lat}}
@@ -64,6 +64,45 @@
 			xAnchor: 0.5, // 컨텐츠의 x 위치
 			yAnchor: 0 // 컨텐츠의 y 위치
 		});
+=======
+		var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng({{chargespot_list.2.lat}}, {{chargespot_list.2.lng}}),
+			level: 3
+		};
+
+      var map = new kakao.maps.Map(container, options);
+      
+      {% for chargespot in chargespot_list %}
+         // 마커가 표시될 위치입니다 
+         var markerPosition  = new kakao.maps.LatLng({{chargespot.lat}}, {{chargespot.lng}}); 
+
+         // 마커를 생성합니다
+         var marker = new kakao.maps.Marker({
+            position: markerPosition
+         });
+
+         // 마커가 지도 위에 표시되도록 설정합니다
+         marker.setMap(map);
+
+         // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+         var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+         // 인포윈도우를 생성합니다
+         var infowindow = new kakao.maps.InfoWindow({
+            content : iwContent,
+            removable : iwRemoveable
+         });
+
+         // 마커에 클릭이벤트를 등록합니다
+         kakao.maps.event.addListener(marker, 'click', function() {
+            // 마커 위에 인포윈도우를 표시합니다
+            infowindow.open(map, marker);  
+         });
+      {% endfor %}
+
+>>>>>>> 4069ac49efc9ad440216db86bc025615d5b755f6
 
 	</script>
 </body>
