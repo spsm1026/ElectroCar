@@ -5,8 +5,6 @@ from django.template import loader
 from bs4 import BeautifulSoup
 import requests
 
-
-
 def main(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D'
     res = requests.get(url)
@@ -36,10 +34,13 @@ def map(request):
     all = soup.select('item')
     chargespot_list = []
     for tag in all:
-        chargespot = {"lat" : "" , "lng" : "" }
-        chargespot["lat"] = str(tag.select_one('lat').text)
-        chargespot["lng"] = str(tag.select_one('lng').text)
-        chargespot_list.append(chargespot)
+        if "금천구" in str(tag.select_one('addr').text):
+            chargespot = {"statNm" : "" , "address" : "","lat" : "" , "lng" : "" }
+            chargespot["statNm"] = str(tag.select_one('statNm').text)
+            chargespot["address"] = str(tag.select_one('addr').text)
+            chargespot["lat"] = str(tag.select_one('lat').text)
+            chargespot["lng"] = str(tag.select_one('lng').text)
+            chargespot_list.append(chargespot)
 
     # return render(request, 'map/map.html', {"chargespot_list_rat": chargespot_list[0]["rat"], "chargespot_list_lng": chargespot_list[0]["lng"]})
     return render(request, 'map/map.html', {"chargespot_list": chargespot_list} )
