@@ -37,8 +37,8 @@ def map(request):
     chargespot_list = []
     for tag in all:
         chargespot = {"lat" : "" , "lng" : "" }
-        chargespot["lat"] = tag.select_one('lat').text
-        chargespot["lng"] = tag.select_one('lng').text
+        chargespot["lat"] = str(tag.select_one('lat').text)
+        chargespot["lng"] = str(tag.select_one('lng').text)
         chargespot_list.append(chargespot)
 
     # return render(request, 'map/map.html', {"chargespot_list_rat": chargespot_list[0]["rat"], "chargespot_list_lng": chargespot_list[0]["lng"]})

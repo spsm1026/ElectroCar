@@ -1,63 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>다음 지도 API</title>
+   <meta charset="utf-8">
+   <title>다음 지도 API</title>
 </head>
 <body>
-	<div id="map" style="width:750px;height:350px;"></div>
+   <div id="map" style="width:750px;height:500px;"></div>
+	
+   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f282246b8028568c461c97cc10c199a4"></script>
+   <script>
+	    chargespot_list_lat = {{chargespot_list.2.lat}}
+        chargespot_list_lng = {{chargespot_list.2.lng}}
 
-	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805"></script>
-	<script>
-		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-		    mapOption = {
-		        center: new kakao.maps.LatLng(37.57032, 126.98125), // 지도의 중심좌표
-		        level: 5, // 지도의 확대 레벨
-		        mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
-		    }; 
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = {
+              center: new kakao.maps.LatLng({{chargespot_list.2.lat}},{{chargespot_list.2.lng}}),  // 지도의 중심좌표
+              level: 4, // 지도의 확대 레벨
+              mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
+            }; 
 
 		// 지도를 생성한다 
 		var map = new kakao.maps.Map(mapContainer, mapOption); 
+		// 마커가 표시될 위치입니다
+		var markerPosition  = new kakao.maps.LatLng({{chargespot_list.2.lat}}, {{chargespot_list.2.lng}}); 
+		
 
-		// 지도 중심 좌표 변화 이벤트를 등록한다
-		kakao.maps.event.addListener(map, 'center_changed', function () {
-			console.log('지도의 중심 좌표는 ' + map.getCenter().toString() +' 입니다.');
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+			position: markerPosition
 		});
 
-		// 지도 확대 레벨 변화 이벤트를 등록한다
-		kakao.maps.event.addListener(map, 'zoom_changed', function () {
-			console.log('지도의 현재 확대레벨은 ' + map.getLevel() +'레벨 입니다.');
+		// 마커가 지도 위에 표시되도록 설정합니다
+		marker.setMap(map);
+		for (var i = 0; i < markerPosition.length; i ++) {
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+			map: map, // 마커를 표시할 지도
+			position: markerPosition[i].latlng // 마커의 위치
 		});
 
-		// 지도 영역 변화 이벤트를 등록한다
-		kakao.maps.event.addListener(map, 'bounds_changed', function () {
-			var mapBounds = map.getBounds(),
-				message = '지도의 남서쪽, 북동쪽 영역좌표는 ' +
-							mapBounds.toString() + '입니다.';
-
-			console.log(message);	
+		// 마커에 표시할 인포윈도우를 생성합니다 
+		var infowindow = new kakao.maps.InfoWindow({
+			content: markerPosition[i].content // 인포윈도우에 표시할 내용
 		});
 
-		// 지도 시점 변화 완료 이벤트를 등록한다
-		kakao.maps.event.addListener(map, 'idle', function () {
-			var message = '지도의 중심좌표는 ' + map.getCenter().toString() + ' 이고,' + 
-							'확대 레벨은 ' + map.getLevel() + ' 레벨 입니다.';
-			console.log(message);
-		});
+      // 지도 타입 변경 컨트롤을 생성한다
+      var mapTypeControl = new kakao.maps.MapTypeControl();
 
-		chargespot_list = {{chargespot_list}}
-		// chargespot_list_lat = {{chargespot_list.0.lat}}
-		// chargespot_list_lng = {{chargespot_list.0.lng}}
-		console.log(chargespot_list)
-		// 커스텀 오버레이를 생성하고 지도에 표시한다
-		// var customOverlay = new kakao.maps.CustomOverlay({
-		// 	map: map,
-		// 	content: '<div style="padding:0 5px;background:#fff;">HTML코드를 입력해주세요 :D</div>', 
-		// 	position: new kakao.maps.LatLng(chargespot_list_lat, chargespot_list_lng), // 커스텀 오버레이를 표시할 좌표
-		// 	xAnchor:  chargespot_list_lat, // 컨텐츠의 x 위치
-		// 	yAnchor:  chargespot_list_lng   // 컨텐츠의 y 위치
-		// });
+      // 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
+      map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);   
 
-	</script>
+      // 지도에 확대 축소 컨트롤을 생성한다
+      var zoomControl = new kakao.maps.ZoomControl();
+
+      // 지도의 우측에 확대 축소 컨트롤을 추가한다
+      map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+      // 지도 중심 좌표 변화 이벤트를 등록한다
+      kakao.maps.event.addListener(map, 'center_changed', function () {
+         console.log('지도의 중심 좌표는 ' + map.getCenter().toString() +' 입니다.');
+      });
+
+      // 지도 확대 레벨 변화 이벤트를 등록한다
+      kakao.maps.event.addListener(map, 'zoom_changed', function () {
+         console.log('지도의 현재 확대레벨은 ' + map.getLevel() +'레벨 입니다.');
+      });
+
+      // 지도 클릭 이벤트를 등록한다 (좌클릭 : click, 우클릭 : rightclick, 더블클릭 : dblclick)
+      kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+         console.log('지도에서 클릭한 위치의 좌표는 ' + mouseEvent.latLng.toString() + ' 입니다.');
+      });   
+
+      // 커스텀 오버레이를 생성하고 지도에 표시한다
+      var customOverlay = new kakao.maps.CustomOverlay({
+         map: map,
+         content: '<div style="padding:0 5px;background:#fff;">HTML코드를 입력해주세요 :D</div>', 
+         position: new kakao.maps.LatLng(chargespot_list_lat, chargespot_list_lng), // 커스텀 오버레이를 표시할 좌표
+         xAnchor: 0.5, // 컨텐츠의 x 위치
+         yAnchor: 0 // 컨텐츠의 y 위치
+      });
+	
+   </script>
 </body>
 </html>
