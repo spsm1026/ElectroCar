@@ -17,5 +17,7 @@ for tag in all:
 
 
 
-print(chargespot_list)
+
+
+
 
