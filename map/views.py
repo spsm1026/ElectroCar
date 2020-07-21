@@ -52,9 +52,9 @@ def map_data(request):
             chargespot["busi_nm"] = str(tag.select_one('busiNm').text)
             chargespot["busi_call"] = str(tag.select_one('busiCall').text)
             #충전기 상태 입력
-            if str(tag.select_one('stat').text) in ['02', '03']:
+            if str(tag.select_one('stat').text) in ['2', '3']:
                 chargespot["stat"] = "사용 가능"
-            elif str(tag.select_one('stat').text) in ['04', '05']:
+            elif str(tag.select_one('stat').text) in ['4', '5']:
                 chargespot["stat"] = "사용 불가"
             else:
                 chargespot["stat"] = "미확인"
