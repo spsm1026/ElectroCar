@@ -29,7 +29,7 @@
 
       @import "compass/css3";
       @import 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700';
-      .rwd-table {margin: 1em 0; min-width: 300px;}
+      .rwd-table {margin: 1em 0; min-width: 475px;}
       .rwd-table tr {border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}
       .rwd-table th {display: none;}
       .rwd-table td {display: block;}
@@ -41,13 +41,13 @@
          width: 0.25em;
          display: inline-block;
       }
-      @media (min-width: 340px) {
+      @media (min-width: 480px) {
          .rwd-table td:before {
             display: none;
          }
       }
       .rwd-table th, .rwd-table td {text-align: left;}
-      @media (min-width: 340px) {
+      @media (min-width: 475px) {
          .rwd-table th, .rwd-table td {
             display: table-cell;
             padding: 0.25em 0.5em;
@@ -84,7 +84,7 @@
       .rwd-table th, .rwd-table td {
          margin: 0.25em 1em;
       }
-      @media (min-width: 320px) {
+      @media (min-width: 475px) {
          .rwd-table th, .rwd-table td {
             padding: 0.25em !important;
          }
@@ -207,16 +207,61 @@ var $table = $('#table');
                marker_list.push(marker)
                var link = res[i].lat + "," + res[i].lng
 
-               if (res[i].chgertype == "DC + AC"){
-                  var chgertype = "DC + AC"
+               
+
+               if (res[i].chgertype == 01){
+                  var chgertype = "DC 차데모"
+                  var carType = "블루온, 레이, 쏘울, 아이오닉"
                   }  
-                  else if (res[i].chgertype == "DC") {
-                     var chgertype = "DC 입니당"
+                  else if (res[i].chagertype == 02) {
+                     var chgerType = "AC 완속"
+                     var carType = "몰라"
                   }
-                  else if (res[i].chgertype == "AC") {
-                     var chgertype = "AC 입니당"
+                  else if (res[i].chagertype == 03) {
+                     var chgerType = "DC 차데모" + "<br>" + "AC 3상"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "SM3 ZE"
                   }
-   
+                  else if (res[i].chagertype == 04) {
+                     var chgerType = "DC 콤보"
+                     var carType = "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 05) {
+                     var chgerType = "DC 차데모" + "<br>" + "DC 콤보"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 06) {
+                     var chgerType = "DC 차데모" + "<br>" + "AC 3상" + "<br>" + "DC 콤보"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" +  "SM3 ZE" + "<br>" + "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 07) {
+                     var chgerType = "AC 3상"
+                     var carType = "SM3 ZE"
+                  }
+               
+               if () {
+
+               }
+                  
+               for(var j=0; j < table_list.length; j++) {
+                  var table = 
+                     '<table class="rwd-table">' +
+                     '<tr>' +
+                        '<th>Index</th>' +
+                        '<th>Power Type</th>' +
+                        '<th>Charger Type</th>' +
+                        '<th>Car Type</th>' +
+                        '<th>Status</th>' +
+
+                     '</tr>' +
+                     '<tr>' +
+                        '<td data-th="Movie Title">' + j +'</td>' +
+                        '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                        '<td data-th="Genre">'+ chgerType +'</td>' +
+                        '<td data-th="Gross">'+ carType +'</td>' +
+                        '<td data-th="Year">'+ res[i].stat +'</td>' +
+                     '</tr>' +
+                     '</table>' 
+               }
                
                
                   
@@ -237,30 +282,21 @@ var $table = $('#table');
                '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
                '<table class="rwd-table">' +
                   '<tr>' +
+                     '<th>Index</th>' +
                      '<th>Power Type</th>' +
                      '<th>Charger Type</th>' +
-                     '<th>Year</th>' +
-                     '<th>Gross</th>' +
+                     '<th>Car Type</th>' +
+                     '<th>Status</th>' +
+
                   '</tr>' +
                   '<tr>' +
+                     '<td data-th="Movie Title">' +  +'</td>' +
                      '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-                     '<td data-th="Genre">'+ chgertype +'</td>' +
-                     '<td data-th="Year">1977</td>' +
-                     '<td data-th="Gross">$460,935,665</td>' +
+                     '<td data-th="Genre">'+ chgerType +'</td>' +
+                     '<td data-th="Gross">'+ carType +'</td>' +
+                     '<td data-th="Year">'+ res[i].stat +'</td>' +
                   '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">Howard The Duck</td>'+
-                     '<td data-th="Genre">"Comedy"</td>' +
-                     '<td data-th="Year">1986</td>' +
-                     '<td data-th="Gross">$16,295,774</td>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">American Graffiti</td>' +
-                     '<td data-th="Genre">Comedy, Drama</td>' +
-                     '<td data-th="Year">1973</td>' + 
-                     '<td data-th="Gross">$115,000,000</td>' +
-                  '</tr>' +
-                  '</table>' +
+                  
 
                   '<table class="rwd-table">' +
                   '<tr>' +
