@@ -5,7 +5,16 @@
 	<title>Kakao 지도 시작하기</title>
 </head>
 <body>
-   <div id="map" style="width:1000px;height:800px;"></div>
+   <div id="address_search" style = "width:300px; height:100%"></div>
+      <span style="font-weight: bolder; float:left; padding-left: 5px;">지역 선택</span>
+      <br>
+      <select id="select_sido" style="width:120px;" title="시도 선택" class="search_sido">
+         <option value>시도</option>
+      </select>
+      
+   <div id="map" style="width:1000px;height:800px;">
+      
+   </div>
    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
@@ -22,32 +31,32 @@
 
             var map = new kakao.maps.Map(container, options);
             
-            // 마커가 표시될 위치입니다 
-            var markerPosition  = new kakao.maps.LatLng(res[0].lat, res[0].lng); 
+            // // 마커가 표시될 위치입니다 
+            // var markerPosition  = new kakao.maps.LatLng(res[0].lat, res[0].lng); 
 
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-               position: markerPosition
-            });
+            // // 마커를 생성합니다
+            // var marker = new kakao.maps.Marker({
+            //    position: markerPosition
+            // });
 
-            // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(map);
+            // // 마커가 지도 위에 표시되도록 설정합니다
+            // marker.setMap(map);
 
             // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-            var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-               iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+            // var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            //    iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-            // 인포윈도우를 생성합니다
-            var infowindow = new kakao.maps.InfoWindow({
-               content : iwContent,
-               removable : iwRemoveable
-            });
+            // // 인포윈도우를 생성합니다
+            // var infowindow = new kakao.maps.InfoWindow({
+            //    content : iwContent,
+            //    removable : iwRemoveable
+            // });
 
             // 마커에 클릭이벤트를 등록합니다
-            kakao.maps.event.addListener(marker, 'click', function() {
+            // kakao.maps.event.addListener(marker, 'click', function() {
                // 마커 위에 인포윈도우를 표시합니다
-               infowindow.open(map, marker);  
-            });
+               // infowindow.open(map, marker);  
+            // });
 
             // 충전소 여러개 마커 출력
             for(var i = 0; i < res.length; i++) {
@@ -56,11 +65,60 @@
                   position: new kakao.maps.LatLng(res[i].lat, res[i].lng),
                   title: res[i].statNm
                })
+               
+               var infowindow = new kakao.maps.InfoWindow({
+                  content : res[i].statNm
+               });
+            
+               kakao.maps.event.addListener(marker, 'mouseover', makeOverListner(map, marker, infowindow));
+               kakao.maps.event.addListener(marker, 'mouseout', makeOutListner(infowindow));
+            
+               var customOverlay = new kakao.maps.CustomOverlay({
+                  position : marker.position,
+                  content : content,
+                  xAnchor : 0.3,
+                  yAnchor : 0.91
+               });
+
+               customOverlay.setMap(map);
+
             }
+            function makeOverListner(map, marker, infowindow) {
+               return function() {
+                  infowindow.open(map, marker);
+               };
+            }
+
+            function makeOutListner(infowindow) {
+               return function() {
+                  infowindow.close();
+               };
+            }
+
+            var content = '<div class="wrap">' + 
+            '    <div class="info">' + 
+            '        <div class="title">' + 
+            '            "res[i].statNm"' + 
+            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+            '        </div>' + 
+            '        <div class="body">' + 
+            '            <div class="img">' +
+            '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+            '           </div>' + 
+            '            <div class="desc">' + 
+            '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' + 
+            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
+            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+            '            </div>' + 
+            '        </div>' + 
+            '    </div>' +    
+            '</div>';
+
+
+            
 
          }
       })
-
 
 	</script>
 </body>

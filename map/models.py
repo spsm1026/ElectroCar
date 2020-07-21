@@ -12,3 +12,4 @@ class Goo(models.Model):
 
     def __str__(self):
         return self.goo_name
+
