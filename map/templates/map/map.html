@@ -146,7 +146,6 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
 <script>
-   
 
    //exporte les données sélectionnées
 var $table = $('#table');
@@ -208,8 +207,6 @@ var $table = $('#table');
                marker_list.push(marker)
                var link = res[i].lat + "," + res[i].lng
 
-               
-
                if (res[i].chgertype == 01){
                   var chgertype = "DC 차데모"
                   var carType = "블루온, 레이, 쏘울, 아이오닉"
@@ -239,31 +236,30 @@ var $table = $('#table');
                      var carType = "SM3 ZE"
                   }
                
-    
-                  
-               // for(var j=0; j < table_list.length; j++) {
-               //    var table = 
-               //       '<table class="rwd-table">' +
-               //       '<tr>' +
-               //          '<th>Index</th>' +
-               //          '<th>Power Type</th>' +
-               //          '<th>Charger Type</th>' +
-               //          '<th>Car Type</th>' +
-               //          '<th>Status</th>' +
+               if () {
 
-               //       '</tr>' +
-               //       '<tr>' +
-               //          '<td data-th="Movie Title">' + j +'</td>' +
-               //          '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-               //          '<td data-th="Genre">'+ chgerType +'</td>' +
-               //          '<td data-th="Gross">'+ carType +'</td>' +
-               //          '<td data-th="Year">'+ res[i].stat +'</td>' +
-               //       '</tr>' +
-               //       '</table>' 
-               // }
-               
-               
+               }
                   
+               for(var j=0; j < table_list.length; j++) {
+                  var table = 
+                     '<table class="rwd-table">' +
+                     '<tr>' +
+                        '<th>Index</th>' +
+                        '<th>Power Type</th>' +
+                        '<th>Charger Type</th>' +
+                        '<th>Car Type</th>' +
+                        '<th>Status</th>' +
+
+                     '</tr>' +
+                     '<tr>' +
+                        '<td data-th="Movie Title">' + j +'</td>' +
+                        '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                        '<td data-th="Genre">'+ chgerType +'</td>' +
+                        '<td data-th="Gross">'+ carType +'</td>' +
+                        '<td data-th="Year">'+ res[i].stat +'</td>' +
+                     '</tr>' +
+                     '</table>' 
+               }
 
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
@@ -305,7 +301,7 @@ var $table = $('#table');
                      '<th>Gross</th>' +
                   '</tr>' +
                   '<tr>' +
-                     '<td data-th="Movie Title">아아</td>' +
+                     '<td data-th="Movie Title">급속</td>' +
                      '<td data-th="Genre">Adventure, Sci-fi</td>' +
                      '<td data-th="Year">1977</td>' +
                      '<td data-th="Gross">$460,935,665</td>' +
@@ -323,11 +319,38 @@ var $table = $('#table');
                      '<td data-th="Gross">$115,000,000</td>' +
                   '</tr>' +
                   '</table>' +
+
+                  '<table class="rwd-table">' +
+                  '<tr>' +
+                     '<th>PowerType</th>' +
+                     '<th>Genre</th>' +
+                     '<th>Year</th>' +
+                     '<th>Gross</th>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">급속</td>' +
+                     '<td data-th="Genre">Adventure, Sci-fi</td>' +
+                     '<td data-th="Year">1977</td>' +
+                     '<td data-th="Gross">$460,935,665</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">Howard The Duck</td>'+
+                     '<td data-th="Genre">"Comedy"</td>' +
+                     '<td data-th="Year">1986</td>' +
+                     '<td data-th="Gross">$16,295,774</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">American Graffiti</td>' +
+                     '<td data-th="Genre">Comedy, Drama</td>' +
+                     '<td data-th="Year">1973</td>' + 
+                     '<td data-th="Gross">$115,000,000</td>' +
+                  '</tr>' +
+                  '</table>' +
+
                '            </div>' + 
                '        </div>' + 
                '    </div>' +                
                '</div>';
-               
 
                // 마커 위에 커스텀오버레이를 표시합니다
                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
