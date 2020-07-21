@@ -207,7 +207,19 @@ var $table = $('#table');
                marker_list.push(marker)
                var link = res[i].lat + "," + res[i].lng
 
+               if (res[i].chgertype == "DC + AC"){
+                  var chgertype = "DC + AC"
+                  }  
+                  else if (res[i].chgertype == "DC") {
+                     var chgertype = "DC 입니당"
+                  }
+                  else if (res[i].chgertype == "AC") {
+                     var chgertype = "AC 입니당"
+                  }
+   
                
+               
+                  
 
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
@@ -225,14 +237,14 @@ var $table = $('#table');
                '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
                '<table class="rwd-table">' +
                   '<tr>' +
-                     '<th>PowerType</th>' +
-                     '<th>Genre</th>' +
+                     '<th>Power Type</th>' +
+                     '<th>Charger Type</th>' +
                      '<th>Year</th>' +
                      '<th>Gross</th>' +
                   '</tr>' +
                   '<tr>' +
-                     '<td data-th="Movie Title">급속</td>' +
-                     '<td data-th="Genre">Adventure, Sci-fi</td>' +
+                     '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                     '<td data-th="Genre">'+ chgertype +'</td>' +
                      '<td data-th="Year">1977</td>' +
                      '<td data-th="Gross">$460,935,665</td>' +
                   '</tr>' +
