@@ -1,36 +1,193 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8"/>
-	<title>Kakao 지도 시작하기</title>
+
 	<style>
-		.wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+		.wrap {position: absolute;left: 0;bottom: 40px;width: 500px;height: 310px;margin-left: -260px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
 		.wrap * {padding: 0;margin: 0;}
-		.wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+		.wrap .info {width: 500px; height: 300px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
 		.wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
 		.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
 		.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
 		.info .close:hover {cursor: pointer;}
-		.info .body {position: relative;overflow: hidden;}
-		.info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+		.info .body {width: 500px; height: 280px;overflow: auto;}
+		.info .desc {position: relative; margin: 5px 5px 5px 5px; height: 143px;}
 		.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 		.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
 		.info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
-		.info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+		.info:after {content: '';position: absolute;margin-left: 0px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 		.info .link {color: #5085BB;}
-	</style>
+
+      .container {
+	width: 1024px;
+	padding: 2em;
+}
+
+.bold-blue {
+	font-weight: bold;
+	color: #0277BD;
+}
+
+      @import "compass/css3";
+      @import 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700';
+      .rwd-table {margin: 1em 0; min-width: 475px;}
+      .rwd-table tr {border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}
+      .rwd-table th {display: none;}
+      .rwd-table td {display: block;}
+      .rwd-table td:first-child {padding-top: 0.5em;}
+      .rwd-table td:last-child {padding-bottom: 0.5em;}
+      .rwd-table td:before {
+         content: attr(data-th) ": ";
+         font-weight: bold;
+         width: 0.25em;
+         display: inline-block;
+      }
+      @media (min-width: 480px) {
+         .rwd-table td:before {
+            display: none;
+         }
+      }
+      .rwd-table th, .rwd-table td {text-align: left;}
+      @media (min-width: 475px) {
+         .rwd-table th, .rwd-table td {
+            display: table-cell;
+            padding: 0.25em 0.5em;
+         }
+         .rwd-table th:first-child, .rwd-table td:first-child {
+            padding-left: 0;
+         }
+         .rwd-table th:last-child, .rwd-table td:last-child {
+            padding-right: 0;
+         }
+      }
+      body {
+         padding: 0 2em;
+         font-family: Montserrat, sans-serif;
+         -webkit-font-smoothing: antialiased;
+         text-rendering: optimizeLegibility;
+         color: #444;
+         background: #eee;
+      }
+      h1 {
+         font-weight: normal;
+         letter-spacing: -1px;
+         color: #34495e;
+      }
+      .rwd-table {
+         background: #34495e;
+         color: #fff;
+         border-radius: 0.4em;
+         overflow: hidden;
+      }
+      .rwd-table tr {
+         border-color: #46637f;
+      }
+      .rwd-table th, .rwd-table td {
+         margin: 0.25em 1em;
+      }
+      @media (min-width: 475px) {
+         .rwd-table th, .rwd-table td {
+            padding: 0.25em !important;
+         }
+      }
+      .rwd-table th, .rwd-table td:before {
+         color: #dd5;
+      }
+      
+      body{
+	      background-color: #000000;
+         padding: 0px;
+         margin: 0px;
+      }
+
+      #gradient
+      {
+      width: 100%;
+      height: 800px;
+      padding: 0px;
+      margin: 0px;
+      }
+      
+   </style>
+   
+   <head>
+
+      <meta charset="utf-8"/>
+      <title>Kakao 지도 시작하기</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-   <div id="map" style="width:1000px;height:800px;"></div>
-   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+   
+   <div id="address_search" style = "width:300px; height:100%"></div>
+      <span style="font-weight: bolder; float:left; padding-left: 5px;">지역 선택</span>
+      <br>
 
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
+      <select id="select_sido" style="width:120px;" title="시도 선택" class="search_sido">
+         <option value>시도 선택</option>
+         {% for sido in sido_list %}
+            <option value={{sido}}>{{sido.sido_name}}</option>
+         {% endfor %}
+      </select>
+      <select id="select_goo" style="width:120px;" title="구 선택" class="select_goo">
+         <option value>구 선택</option>
+         {% for goo in goo_list %}
+            <option value={{goo}}>{{goo.goo_name}}</option>
+         {% endfor %}
+      </select>
+      <button id='search-btn' type='button'>검색</button>
+   <div id="map" style="width:1000px;height:800px;">
+      
+   </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
 <script>
-      var marker_list = new Array();
-      var overlay_list = new Array();      
+
+   //exporte les données sélectionnées
+var $table = $('#table');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+    })
+
+		var trBoldBlue = $("table");
+
+	$(trBoldBlue).on("click", "tr", function (){
+			$(this).toggleClass("bold-blue");
+	});
+   
+   var marker_list = new Array();
+   var overlay_list = new Array();      
+
+   //커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+   function closeOverlay(i) {
+      overlay = overlay_list[i];
+      overlay.setMap(null);
+   }
+
+   $('#search-btn').click(function() {
+      var sido = $('#select_sido').val();
+      var goo = $('#select_goo').val();
+
       $.ajax({
          url: '/electrocar/mapdata/',
+         data: {
+            'sido': sido,
+            'goo': goo
+         },
          success: function(res) {
+            marker_list = new Array();
+            overlay_list = new Array();      
+            console.log(sido)
+            console.log(goo)
+            $('#map').empty();
 
             var container = document.getElementById('map');
             var options = {
@@ -40,27 +197,74 @@
 
             var map = new kakao.maps.Map(container, options);
 
-     
-
             // 충전소 여러개 마커 출력
             for(var i = 0; i < res.length; i++) {
                var marker = new kakao.maps.Marker({
                   map: map,
                   position: new kakao.maps.LatLng(res[i].lat, res[i].lng),
-<<<<<<< HEAD
-                  title: res[i].statNm
-               })
-            }
-
-         }
-      })
-
-
-	</script>
-=======
                   // title: res[i].statNm
                })
                marker_list.push(marker)
+               var link = res[i].lat + "," + res[i].lng
+
+               
+
+               if (res[i].chgertype == 01){
+                  var chgertype = "DC 차데모"
+                  var carType = "블루온, 레이, 쏘울, 아이오닉"
+                  }  
+                  else if (res[i].chagertype == 02) {
+                     var chgerType = "AC 완속"
+                     var carType = "몰라"
+                  }
+                  else if (res[i].chagertype == 03) {
+                     var chgerType = "DC 차데모" + "<br>" + "AC 3상"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "SM3 ZE"
+                  }
+                  else if (res[i].chagertype == 04) {
+                     var chgerType = "DC 콤보"
+                     var carType = "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 05) {
+                     var chgerType = "DC 차데모" + "<br>" + "DC 콤보"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 06) {
+                     var chgerType = "DC 차데모" + "<br>" + "AC 3상" + "<br>" + "DC 콤보"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" +  "SM3 ZE" + "<br>" + "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 07) {
+                     var chgerType = "AC 3상"
+                     var carType = "SM3 ZE"
+                  }
+               
+               if () {
+
+               }
+                  
+               for(var j=0; j < table_list.length; j++) {
+                  var table = 
+                     '<table class="rwd-table">' +
+                     '<tr>' +
+                        '<th>Index</th>' +
+                        '<th>Power Type</th>' +
+                        '<th>Charger Type</th>' +
+                        '<th>Car Type</th>' +
+                        '<th>Status</th>' +
+
+                     '</tr>' +
+                     '<tr>' +
+                        '<td data-th="Movie Title">' + j +'</td>' +
+                        '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                        '<td data-th="Genre">'+ chgerType +'</td>' +
+                        '<td data-th="Gross">'+ carType +'</td>' +
+                        '<td data-th="Year">'+ res[i].stat +'</td>' +
+                     '</tr>' +
+                     '</table>' 
+               }
+               
+               
+                  
 
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
@@ -69,18 +273,90 @@
                '            <div class="close" onclick="closeOverlay(' + i + ')" title="닫기"></div>' + 
                '        </div>' + 
                '        <div class="body">' + 
-               '            <div class="img">' +
-               '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
-               '           </div>' + 
+               // '            <div class="img">' +
+               // '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+               // '           </div>' + 
                '            <div class="desc">' + 
                '                <div class="ellipsis">' + res[i].address + '</div>' + 
-               '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
-               '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+               '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
+               '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
+               '<table class="rwd-table">' +
+                  '<tr>' +
+                     '<th>Index</th>' +
+                     '<th>Power Type</th>' +
+                     '<th>Charger Type</th>' +
+                     '<th>Car Type</th>' +
+                     '<th>Status</th>' +
+
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">' +  +'</td>' +
+                     '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                     '<td data-th="Genre">'+ chgerType +'</td>' +
+                     '<td data-th="Gross">'+ carType +'</td>' +
+                     '<td data-th="Year">'+ res[i].stat +'</td>' +
+                  '</tr>' +
+                  
+
+                  '<table class="rwd-table">' +
+                  '<tr>' +
+                     '<th>PowerType</th>' +
+                     '<th>Genre</th>' +
+                     '<th>Year</th>' +
+                     '<th>Gross</th>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">급속</td>' +
+                     '<td data-th="Genre">Adventure, Sci-fi</td>' +
+                     '<td data-th="Year">1977</td>' +
+                     '<td data-th="Gross">$460,935,665</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">Howard The Duck</td>'+
+                     '<td data-th="Genre">"Comedy"</td>' +
+                     '<td data-th="Year">1986</td>' +
+                     '<td data-th="Gross">$16,295,774</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">American Graffiti</td>' +
+                     '<td data-th="Genre">Comedy, Drama</td>' +
+                     '<td data-th="Year">1973</td>' + 
+                     '<td data-th="Gross">$115,000,000</td>' +
+                  '</tr>' +
+                  '</table>' +
+
+                  '<table class="rwd-table">' +
+                  '<tr>' +
+                     '<th>PowerType</th>' +
+                     '<th>Genre</th>' +
+                     '<th>Year</th>' +
+                     '<th>Gross</th>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">급속</td>' +
+                     '<td data-th="Genre">Adventure, Sci-fi</td>' +
+                     '<td data-th="Year">1977</td>' +
+                     '<td data-th="Gross">$460,935,665</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">Howard The Duck</td>'+
+                     '<td data-th="Genre">"Comedy"</td>' +
+                     '<td data-th="Year">1986</td>' +
+                     '<td data-th="Gross">$16,295,774</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">American Graffiti</td>' +
+                     '<td data-th="Genre">Comedy, Drama</td>' +
+                     '<td data-th="Year">1973</td>' + 
+                     '<td data-th="Gross">$115,000,000</td>' +
+                  '</tr>' +
+                  '</table>' +
+
                '            </div>' + 
                '        </div>' + 
-               '    </div>' +    
+               '    </div>' +                
                '</div>';
-
+               
 
                // 마커 위에 커스텀오버레이를 표시합니다
                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -92,13 +368,6 @@
                });
                overlay_list.push(overlay);
 
-
-              
-
-
-            
-
-
                // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
                (function(idx) {
                   kakao.maps.event.addListener(marker_list[idx], 'click', function() {
@@ -108,74 +377,128 @@
                })(i);
 
                closeOverlay(i);
-
-
-
-            
-            
-            
             }
-<<<<<<< HEAD
-         }
-      });
-
-
-
-
-   // 마커 위에 커스텀오버레이를 표시합니다
-// 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-var overlay = new kakao.maps.CustomOverlay({
-    content: content,
-    map: map,
-    clickable: true,
-    position: marker.getPosition()       
-});
-
-   // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-   kakao.maps.event.addListener(marker, 'click', function() {
-    overlay.setMap(map);
-});
-
-// 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
-function closeOverlay() {
-    overlay.setMap(null);     
-}
-
-// 마커 클러스터러를 생성합니다 
-var clusterer = new kakao.maps.MarkerClusterer({
-        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-        minLevel: 1 // 클러스터 할 최소 지도 레벨 
-    });
- 
-    // 데이터를 가져오기 위해 jQuery를 사용합니다
-    // 데이터를 가져와 마커를 생성하고 클러스터러 객체에 넘겨줍니다
-    $.get("http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D", function(data) {
-        // 데이터에서 좌표 값을 가지고 마커를 표시합니다
-        // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
-        var markers = $(data.positions).map(function(i, position) {
-            return new kakao.maps.Marker({
-                position : new kakao.maps.LatLng(position.res[i].lat, position.res[i].lng)
-            });
-        });
-
-        // 클러스터러에 마커들을 추가합니다
-        clusterer.addMarkers(markers);
-    });
-=======
-
-            
-         
          }
       })
-      // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
-      function closeOverlay(i) {
-         overlay = overlay_list[i]
-         overlay.setMap(null);     
-      }
->>>>>>> b3ec2819f4a98a50e7c9724db4105c4b9a6158ff
+   })
 
-   </script>
->>>>>>> 8c04111534d91b011ae3ca93edf7bf65a4556892
+   $.ajax({
+      url: '/electrocar/mapdata/',
+      success: function(res) {
+         marker_list = new Array();
+         overlay_list = new Array();      
+
+         $('#map').empty();
+
+         var container = document.getElementById('map');
+         var options = {
+            center: new kakao.maps.LatLng(res[0].lat, res[0].lng),
+            level: 3
+         };
+
+         var map = new kakao.maps.Map(container, options);
+
+         // 충전소 여러개 마커 출력
+         for(var i = 0; i < res.length; i++) {
+            var marker = new kakao.maps.Marker({
+               map: map,
+               position: new kakao.maps.LatLng(res[i].lat, res[i].lng),
+               // title: res[i].statNm
+            })
+            marker_list.push(marker)
+
+            var content = '<div class="wrap">' + 
+            '    <div class="info">' + 
+            '        <div class="title">' + 
+                        res[i].statNm + 
+            '            <div class="close" onclick="closeOverlay(' + i + ')" title="닫기"></div>' + 
+            '        </div>' + 
+            '        <div class="body">' + 
+            '            <div class="img">' +
+            '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+            '           </div>' + 
+            '            <div class="desc">' + 
+            '                <div class="ellipsis">' + res[i].address + '</div>' + 
+            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
+            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+            '<div class="container">' +
+'<h1>Bootstrap Table</h1>' +
+'<p><a href="http://jsfiddle.net/wenyi/e3nk137y/3178/">Data Checkbox</a>, pour cocher les éléments à sélectionner, <a href="https://github.com/wenzhixin/bootstrap-table-examples/blob/master/extensions/filter-control.html">extension Filter control</a>, pour les filtres via les colonnes, <a href="https://github.com/kayalshri/tableExport.jquery.plugin">extension Data export</a> pour exporter</p>' +
+
+'<div id="toolbar">' +
+		'<select class="form-control">' +
+				'<option value="">Export Basic</option>' +
+				'<option value="all">Export All</option>' +
+				'<option value="selected">Export Selected</option>' +
+		'</select>' +
+'</div>' +
+
+            '<table id="table" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">' +
+	'<thead>' +
+		'<tr>' +
+			'<th data-field="state" data-checkbox="true"></th>' +
+			'<th data-field="prenom" data-filter-control="input" data-sortable="true">Prénom</th>' +
+			'<th data-field="date" data-filter-control="select" data-sortable="true">Date</th>' +
+			'<th data-field="examen" data-filter-control="select" data-sortable="true">Examen</th>' +
+			'<th data-field="note" data-sortable="true">Note</th>' +
+		'</tr>' +
+	'</thead>' +
+	'<tbody>' +
+		'<tr>' +
+		'<td class="bs-checkbox ">'+
+      '<input data-index="11" name="btSelectItem" type="checkbox">' +
+      '</td>' + 
+			'<td>Valentin</td>' +
+		   '<td>01/10/2015</td>' +
+			'<td>Philosophie</td>' +
+			'<td>10/20</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td class="bs-checkbox "><input data-index="10" name="btSelectItem" type="checkbox"></td>' +
+			'<td>Eric</td>' +
+			'<td>07/09/2015</td>' +
+			'<td>Mathématiques</td>' +
+			'<td>14/20</td>'
+		'</tr>' +
+		'<tr>' +
+		'<td class="bs-checkbox ">'+
+      '<input data-index="11" name="btSelectItem" type="checkbox">' +
+      '</td>' + 
+			'<td>Valentin</td>' +
+		   '<td>01/10/2015</td>' +
+			'<td>Philosophie</td>' +
+			'<td>10/20</td>' +
+		'</tr>' +
+	'</tbody>' +
+'</table>' +
+            '            </div>' + 
+            '        </div>' + 
+            '    </div>' +
+            '</div>';
+
+            // 마커 위에 커스텀오버레이를 표시합니다
+            // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+         
+            var overlay = new kakao.maps.CustomOverlay({
+               content: content,
+               map: map,
+               position: marker_list[i].getPosition()   
+            });
+            overlay_list.push(overlay);
+
+            // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+            (function(idx) {
+               kakao.maps.event.addListener(marker_list[idx], 'click', function() {
+                  console.log(idx)
+                  overlay_list[idx].setMap(map);
+               });
+            })(i);
+            closeOverlay(i);
+         }
+         
+      }
+   })
+
+	</script>
 </body>
 </html>
