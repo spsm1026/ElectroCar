@@ -41,22 +41,12 @@ def map_data(request):
             chargespot["lng"] = str(tag.select_one('lng').text)
             chargespot["chger_id"] = str(tag.select_one('chgerId').text)
             #충전기 타입 입력
-<<<<<<< HEAD
-            # if str(tag.select_one("chgerType").text) in ['01', '04', '05']:
-            #     chargespot["chgertype"] = "DC"
-            # elif str(tag.select_one("chgerType").text) in ['02', '07'] :
-            #     chargespot["chgertype"] = "AC"
-            # elif str(tag.select_one("chgerType").text) in ['03', '06'] :
-            #     chargespot["chgertype"] = "DC + AC"
-            chargespot["chagertype"] = str(tag.select_one('chgerType').text)
-=======
             if str(tag.select_one("chgerType").text) in ['01', '04', '05']:
                 chargespot["chgertype"] = "DC"
             elif str(tag.select_one("chgerType").text) in ['02', '07'] :
                 chargespot["chgertype"] = "AC"
             elif str(tag.select_one("chgerType").text) in ['03', '06'] :
                 chargespot["chgertype"] = "DC + AC"
->>>>>>> 744d65b96dd838261ba3d086048a2b3d2227833f
             
             chargespot["use_time"] = str(tag.select_one('useTime').text)
             chargespot["busi_nm"] = str(tag.select_one('busiNm').text)
