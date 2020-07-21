@@ -21,6 +21,8 @@ def register(request):
             user.save()
             return render(request, 'customer/register_success.html')
             # return HttpResponseRedirect('/electrocar/create')
+        else:
+            return render(request, 'customer/register_fail.html')
         # DB에 데이터 저장후 로그인 화면으로 이동
         return render(request, 'customer/customer.html')
     # 로그인/회원가입 화면 보여주기
