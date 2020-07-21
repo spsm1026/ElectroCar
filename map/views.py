@@ -58,3 +58,6 @@ def map_data(request):
             chargespot_list.append(chargespot)
 
     return JsonResponse(chargespot_list, safe=False)
+
+def index(request):
+    return render(request,'map/index.html')
