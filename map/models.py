@@ -13,6 +13,8 @@ class Goo(models.Model):
     def __str__(self):
         return self.goo_name
 
-# class Carcharger(models.Model):
-#     car_name = models.CharField(max_length=200)
-#     dc = models.
+class Carcharger(models.Model):
+    car_company = models.CharField(max_length=200)
+    car_name = models.CharField(max_length=200)
+    dc = models.BinaryField(max_length=1)
+    ac = models.BinaryField(max_length=1)
