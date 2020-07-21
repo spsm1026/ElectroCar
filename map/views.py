@@ -33,7 +33,7 @@ def map_data(request):
     for tag in all:
         if search_str in str(tag.select_one('addr').text):
             chargespot = {"statNm" : "" , "address" : "","lat" : "" , "lng" : "", "chger_id" : "" ,
-                         "DC" : "", "AC" : "", "use_time" : "", "busi_nm": "", "busi_call" : "",
+                         "chger_type" : "", "use_time" : "", "busi_nm": "", "busi_call" : "",
                          "stat" : "", }
             chargespot["statNm"] = str(tag.select_one('statNm').text)
             chargespot["address"] = str(tag.select_one('addr').text)
@@ -41,14 +41,12 @@ def map_data(request):
             chargespot["lng"] = str(tag.select_one('lng').text)
             chargespot["chger_id"] = str(tag.select_one('chgerId').text)
             #충전기 타입 입력
-            if str(tag.select_one("chgerType").text) in ['01', '03', '04', '05', '06']:
-                chargespot["DC"] = 1
-            else :
-                chargespot["DC"] = 0
-            if str(tag.select_one('chgerType').text) in ['02', '03', '06', '07']:
-                chargespot["AC"] = 1
-            else :
-                chargespot["AC"] = 0
+            if str(tag.select_one("chgerType").text) in ['01', '04', '05']:
+                chargespot["chgertype"] = "DC"
+            elif str(tag.select_one("chgerType").text) in ['02', '07'] :
+                chargespot["chgertype"] = "AC"
+            elif str(tag.select_one("chgerType").text) in ['03', '06'] :
+                chargespot["chgertype"] = "DC + AC"
             
             chargespot["use_time"] = str(tag.select_one('useTime').text)
             chargespot["busi_nm"] = str(tag.select_one('busiNm').text)

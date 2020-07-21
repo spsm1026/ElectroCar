@@ -17,6 +17,16 @@
 		.info:after {content: '';position: absolute;margin-left: 0px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 		.info .link {color: #5085BB;}
 
+      .container {
+	width: 1024px;
+	padding: 2em;
+}
+
+.bold-blue {
+	font-weight: bold;
+	color: #0277BD;
+}
+
       @import "compass/css3";
       @import 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700';
       .rwd-table {margin: 1em 0; min-width: 300px;}
@@ -136,6 +146,22 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
 <script>
+
+   //exporte les données sélectionnées
+var $table = $('#table');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+    })
+
+		var trBoldBlue = $("table");
+
+	$(trBoldBlue).on("click", "tr", function (){
+			$(this).toggleClass("bold-blue");
+	});
    
    var marker_list = new Array();
    var overlay_list = new Array();      
@@ -181,6 +207,8 @@
                marker_list.push(marker)
                var link = res[i].lat + "," + res[i].lng
 
+               
+
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
                '        <div class="title">' + 
@@ -193,7 +221,7 @@
                // '           </div>' + 
                '            <div class="desc">' + 
                '                <div class="ellipsis">' + res[i].address + '</div>' + 
-               '                <div class="jibun ellipsis">' + '환경부' + '</div>' + 
+               '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
                '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
                '<table class="rwd-table">' +
                   '<tr>' +
@@ -345,9 +373,59 @@
             '                <div class="ellipsis">' + res[i].address + '</div>' + 
             '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
             '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+            '<div class="container">' +
+'<h1>Bootstrap Table</h1>' +
+'<p><a href="http://jsfiddle.net/wenyi/e3nk137y/3178/">Data Checkbox</a>, pour cocher les éléments à sélectionner, <a href="https://github.com/wenzhixin/bootstrap-table-examples/blob/master/extensions/filter-control.html">extension Filter control</a>, pour les filtres via les colonnes, <a href="https://github.com/kayalshri/tableExport.jquery.plugin">extension Data export</a> pour exporter</p>' +
+
+'<div id="toolbar">' +
+		'<select class="form-control">' +
+				'<option value="">Export Basic</option>' +
+				'<option value="all">Export All</option>' +
+				'<option value="selected">Export Selected</option>' +
+		'</select>' +
+'</div>' +
+
+            '<table id="table" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">' +
+	'<thead>' +
+		'<tr>' +
+			'<th data-field="state" data-checkbox="true"></th>' +
+			'<th data-field="prenom" data-filter-control="input" data-sortable="true">Prénom</th>' +
+			'<th data-field="date" data-filter-control="select" data-sortable="true">Date</th>' +
+			'<th data-field="examen" data-filter-control="select" data-sortable="true">Examen</th>' +
+			'<th data-field="note" data-sortable="true">Note</th>' +
+		'</tr>' +
+	'</thead>' +
+	'<tbody>' +
+		'<tr>' +
+		'<td class="bs-checkbox ">'+
+      '<input data-index="11" name="btSelectItem" type="checkbox">' +
+      '</td>' + 
+			'<td>Valentin</td>' +
+		   '<td>01/10/2015</td>' +
+			'<td>Philosophie</td>' +
+			'<td>10/20</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td class="bs-checkbox "><input data-index="10" name="btSelectItem" type="checkbox"></td>' +
+			'<td>Eric</td>' +
+			'<td>07/09/2015</td>' +
+			'<td>Mathématiques</td>' +
+			'<td>14/20</td>'
+		'</tr>' +
+		'<tr>' +
+		'<td class="bs-checkbox ">'+
+      '<input data-index="11" name="btSelectItem" type="checkbox">' +
+      '</td>' + 
+			'<td>Valentin</td>' +
+		   '<td>01/10/2015</td>' +
+			'<td>Philosophie</td>' +
+			'<td>10/20</td>' +
+		'</tr>' +
+	'</tbody>' +
+'</table>' +
             '            </div>' + 
             '        </div>' + 
-            '    </div>' +    
+            '    </div>' +
             '</div>';
 
             // 마커 위에 커스텀오버레이를 표시합니다
