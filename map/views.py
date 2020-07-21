@@ -44,8 +44,11 @@ def map_data(request):
 
     # return render(request, 'map/map.html', {"chargespot_list_rat": chargespot_list[0]["rat"], "chargespot_list_lng": chargespot_list[0]["lng"]})
     return JsonResponse(chargespot_list, safe=False)
+<<<<<<< HEAD
+=======
 
 def index(request):
    
 
     return render(request,'map/index.html')
+>>>>>>> 8c04111534d91b011ae3ca93edf7bf65a4556892
