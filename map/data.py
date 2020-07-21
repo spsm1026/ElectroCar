@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import json
 
 
 url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D'
@@ -14,10 +15,6 @@ for tag in all:
     chargespot["lat"] = tag.select_one('lat')
     chargespot["lng"] = tag.select_one('lng')
     chargespot_list.append(chargespot)
-
-
-
-
 
 
 
