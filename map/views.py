@@ -34,7 +34,7 @@ def map_data(request):
     all = soup.select('item')
     chargespot_list = []
     for tag in all:
-        if "종로구" in str(tag.select_one('addr').text):
+        if "서울특별시" in str(tag.select_one('addr').text):
             chargespot = {"statNm" : "" , "address" : "","lat" : "" , "lng" : "" }
             chargespot["statNm"] = str(tag.select_one('statNm').text)
             chargespot["address"] = str(tag.select_one('addr').text)
@@ -44,3 +44,8 @@ def map_data(request):
 
     # return render(request, 'map/map.html', {"chargespot_list_rat": chargespot_list[0]["rat"], "chargespot_list_lng": chargespot_list[0]["lng"]})
     return JsonResponse(chargespot_list, safe=False)
+
+def index(request):
+   
+
+    return render(request,'map/index.html')
