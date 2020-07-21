@@ -8,24 +8,6 @@ from .models import Sido, Goo
 
 import requests
 
-
-def main(request):
-    url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D'
-    res = requests.get(url)
-    res.encoding = None
-    soup = BeautifulSoup(res.text, 'html.parser')
-    # print(res.text)
-    all = soup.select('item')
-    chargespot_list = []
-
-    for tag in all:
-        chargespot = {"lat" : "" , "lng" : "" }
-        chargespot["lat"] = tag.select_one('lat').text
-        chargespot["lng"] = tag.select_one('lng').text
-        chargespot_list.append(chargespot)
-
-    return render(request, 'map/main.html', {"chargespot_list": chargespot_list})
-
 def map(request):
     sido_list = Sido.objects.order_by('sido_name')
     seoul = Sido.objects.get(id=1)
@@ -50,11 +32,35 @@ def map_data(request):
 
     for tag in all:
         if search_str in str(tag.select_one('addr').text):
-            chargespot = {"statNm" : "" , "address" : "","lat" : "" , "lng" : "" }
+            chargespot = {"statNm" : "" , "address" : "","lat" : "" , "lng" : "", "chger_id" : "" ,
+                         "DC" : "", "AC" : "", "use_time" : "", "busi_nm": "", "busi_call" : "",
+                         "stat" : "", }
             chargespot["statNm"] = str(tag.select_one('statNm').text)
             chargespot["address"] = str(tag.select_one('addr').text)
             chargespot["lat"] = str(tag.select_one('lat').text)
             chargespot["lng"] = str(tag.select_one('lng').text)
+            chargespot["chger_id"] = str(tag.select_one('chgerId').text)
+            #충전기 타입 입력
+            if str(tag.select_one("chgerType").text) in ['01', '03', '04', '05', '06']:
+                chargespot["DC"] = 1
+            else :
+                chargespot["DC"] = 0
+            if str(tag.select_one('chgerType').text) in ['02', '03', '06', '07']:
+                chargespot["AC"] = 1
+            else :
+                chargespot["AC"] = 0
+            
+            chargespot["use_time"] = str(tag.select_one('useTime').text)
+            chargespot["busi_nm"] = str(tag.select_one('busiNm').text)
+            chargespot["busi_call"] = str(tag.select_one('busiCall').text)
+            #충전기 상태 입력
+            if str(tag.select_one('stat').text) in ['02', '03']:
+                chargespot["stat"] = "사용 가능"
+            elif str(tag.select_one('stat').text) in ['04', '05']:
+                chargespot["stat"] = "사용 불가"
+            else:
+                chargespot["stat"] = "미확인"
+            chargespot["power_type"] = str(tag.select_one('powerType').text)
             chargespot_list.append(chargespot)
 
     return JsonResponse(chargespot_list, safe=False)

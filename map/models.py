@@ -13,5 +13,6 @@ class Goo(models.Model):
     def __str__(self):
         return self.goo_name
 
-# class charger(models.Model):
-#     charger_Type
+# class Carcharger(models.Model):
+#     car_name = models.CharField(max_length=200)
+#     dc = models.
