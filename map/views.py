@@ -5,7 +5,7 @@ from django.urls import path
 from django.template import loader
 from bs4 import BeautifulSoup
 import requests
-from .models import Sido
+import json
 
 def main(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D'
@@ -17,11 +17,9 @@ def main(request):
     chargespot_list = []
     for tag in all:
         chargespot = {"lat" : "" , "lng" : "" }
-        chargespot["lat"] = tag.select_one('lat').text
-        chargespot["lng"] = tag.select_one('lng').text
+        chargespot["lat"] = str(tag.select_one('lat').text)
+        chargespot["lng"] = str(tag.select_one('lng').text)
         chargespot_list.append(chargespot)
-
-
     return render(request, 'map/main.html', {"chargespot_list": chargespot_list})
 
 def map(request):
