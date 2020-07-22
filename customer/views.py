@@ -21,6 +21,7 @@ def find(request):
 
 # 회원가입
 def register(request):
+    car_charge_list = Carcharger.objects.order_by('id')
     if request.method == 'POST':
         # 입력값이 같다면 DB에 저장
         if request.POST['password1'] == request.POST['password2']:
@@ -34,7 +35,7 @@ def register(request):
         # DB에 데이터 저장후 로그인 화면으로 이동
         return render(request, 'customer/customer.html')
     # 로그인/회원가입 화면 보여주기
-    return render(request, 'customer/customer.html')
+    return render(request, 'customer/customer.html', {'car_charge_list' : car_charge_list})
 
 # 로그인
 def login(request):
