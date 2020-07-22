@@ -115,13 +115,72 @@
       <title>Kakao 지도 시작하기</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="">
+      <meta name="author" content="">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+      <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-   
+   <!-- Navigation -->
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">주소로 검색</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+   </nav>
+
+  <!-- Page Content -->
+   <div class="container">
+      <div class="row" style="display : block;">
+         <span style="font-size:20px; font-weight: bolder; float:left; padding-left: 5px; height:50px;">지역 선택</span>
+         <br>
+         <br>
+         <select id="select_sido" style="width:120px; height:50px;" title="시도 선택" class="search_sido">
+            <option value>시도 선택</option>
+            {% for sido in sido_list %}
+               <option value={{sido}}>{{sido.sido_name}}</option>
+            {% endfor %}
+         </select>
+         &nbsp;&nbsp;&nbsp;&nbsp;
+         <select id="select_goo" style="width:120px; height:50px;" title="구 선택" class="select_goo">
+            <option value>구 선택</option>
+            {% for goo in goo_list %}
+               <option value={{goo}}>{{goo.goo_name}}</option>
+            {% endfor %}
+         </select>
+         &nbsp;&nbsp;&nbsp;&nbsp;
+         <button id='search-btn' type='button' style="width:120px; height:50px;">검색</button>
+            <br>
+            <br>
+            <br>
+         </div>
+         <div id="map" style="width:700px;height:500px; margin:auto;"></div>
+      </div>
+   </div>
+<!-- 
    <div id="address_search" style = "width:300px; height:100%"></div>
       <span style="font-weight: bolder; float:left; padding-left: 5px;">지역 선택</span>
       <br>
@@ -143,7 +202,7 @@
    <br>
    <br>
    <div id="map" style="width:700px;height:500px; margin:auto;">
-   </div>
+   </div> -->
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
@@ -302,74 +361,12 @@ var $table = $('#table');
 
                   '</tr>' +
                   charge_content +
-                  '</table>'
-                  // '<tr>' +
-                  //    '<td data-th="Movie Title">' +  +'</td>' +
-                  //    '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-                  //    '<td data-th="Genre">'+ chgerType +'</td>' +
-                  //    '<td data-th="Gross">'+ carType +'</td>' +
-                  //    '<td data-th="Year">'+ res[i].stat +'</td>' +
-                  // '</tr>' +
-                  
-
-                  // '<table class="rwd-table">' +
-                  // '<tr>' +
-                  //    '<th>PowerType</th>' +
-                  //    '<th>Genre</th>' +
-                  //    '<th>Year</th>' +
-                  //    '<th>Gross</th>' +
-                  // '</tr>' +
-                  // '<tr>' +
-                  //    '<td data-th="Movie Title">급속</td>' +
-                  //    '<td data-th="Genre">Adventure, Sci-fi</td>' +
-                  //    '<td data-th="Year">1977</td>' +
-                  //    '<td data-th="Gross">$460,935,665</td>' +
-                  // '</tr>' +
-                  // '<tr>' +
-                  //    '<td data-th="Movie Title">Howard The Duck</td>'+
-                  //    '<td data-th="Genre">"Comedy"</td>' +
-                  //    '<td data-th="Year">1986</td>' +
-                  //    '<td data-th="Gross">$16,295,774</td>' +
-                  // '</tr>' +
-                  // '<tr>' +
-                  //    '<td data-th="Movie Title">American Graffiti</td>' +
-                  //    '<td data-th="Genre">Comedy, Drama</td>' +
-                  //    '<td data-th="Year">1973</td>' + 
-                  //    '<td data-th="Gross">$115,000,000</td>' +
-                  // '</tr>' +
-                  // '</table>' +
-
-                  // '<table class="rwd-table">' +
-                  // '<tr>' +
-                  //    '<th>PowerType</th>' +
-                  //    '<th>Genre</th>' +
-                  //    '<th>Year</th>' +
-                  //    '<th>Gross</th>' +
-                  // '</tr>' +
-                  // '<tr>' +
-                  //    '<td data-th="Movie Title">급속</td>' +
-                  //    '<td data-th="Genre">Adventure, Sci-fi</td>' +
-                  //    '<td data-th="Year">1977</td>' +
-                  //    '<td data-th="Gross">$460,935,665</td>' +
-                  // '</tr>' +
-                  // '<tr>' +
-                  //    '<td data-th="Movie Title">Howard The Duck</td>'+
-                  //    '<td data-th="Genre">"Comedy"</td>' +
-                  //    '<td data-th="Year">1986</td>' +
-                  //    '<td data-th="Gross">$16,295,774</td>' +
-                  // '</tr>' +
-                  // '<tr>' +
-                  //    '<td data-th="Movie Title">American Graffiti</td>' +
-                  //    '<td data-th="Genre">Comedy, Drama</td>' +
-                  //    '<td data-th="Year">1973</td>' + 
-                  //    '<td data-th="Gross">$115,000,000</td>' +
-                  // '</tr>' +
-                  '</table>' +
+                  '</table>'+
 
                '            </div>' + 
-               '        </div>' + 
-               '    </div>' +                
-               '</div>';
+               '        </div>'  
+               // '    </div>' +                
+               // '</div>';
 
                // 마커 위에 커스텀오버레이를 표시합니다
                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -433,74 +430,69 @@ var $table = $('#table');
 
             //latlngbounds 객체에 좌표 추가
             bounds.extend(latlng);
+
+            var link = res[i].lat + "," + res[i].lng
+
+            if (res[i].chgertype == 01){
+                  var chgertype = "DC 차데모"
+                  var carType = "블루온, 레이, 쏘울, 아이오닉"
+                  }  
+                  else if (res[i].chagertype == 02) {
+                     var chgerType = "AC 완속"
+                     var carType = "몰라"
+                  }
+                  else if (res[i].chagertype == 03) {
+                     var chgerType = "DC 차데모" + "<br>" + "AC 3상"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "SM3 ZE"
+                  }
+                  else if (res[i].chagertype == 04) {
+                     var chgerType = "DC 콤보"
+                     var carType = "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 05) {
+                     var chgerType = "DC 차데모" + "<br>" + "DC 콤보"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 06) {
+                     var chgerType = "DC 차데모" + "<br>" + "AC 3상" + "<br>" + "DC 콤보"
+                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" +  "SM3 ZE" + "<br>" + "스파크, 볼트, i3"
+                  }
+                  else if (res[i].chagertype == 07) {
+                     var chgerType = "AC 3상"
+                     var carType = "SM3 ZE"
+                  }
+
             var content = '<div class="wrap">' + 
-            '    <div class="info">' + 
-            '        <div class="title">' + 
-                        res[i].statNm + 
-            '            <div class="close" onclick="closeOverlay(' + i + ')" title="닫기"></div>' + 
-            '        </div>' + 
-            '        <div class="body">' + 
-            '            <div class="img">' +
-            '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
-            '           </div>' + 
-            '            <div class="desc">' + 
-            '                <div class="ellipsis">' + res[i].address + '</div>' + 
-            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
-            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
-            '<div class="container">' +
-'<h1>Bootstrap Table</h1>' +
-'<p><a href="http://jsfiddle.net/wenyi/e3nk137y/3178/">Data Checkbox</a>, pour cocher les éléments à sélectionner, <a href="https://github.com/wenzhixin/bootstrap-table-examples/blob/master/extensions/filter-control.html">extension Filter control</a>, pour les filtres via les colonnes, <a href="https://github.com/kayalshri/tableExport.jquery.plugin">extension Data export</a> pour exporter</p>' +
+               '    <div class="info">' + 
+               '        <div class="title">' + 
+                           res[i].statNm + 
+               '            <div class="close" onclick="closeOverlay(' + i + ')" title="닫기"></div>' + 
+               '        </div>' + 
+               '        <div class="body">' + 
+               '            <div class="desc">' + 
+               '                <div class="ellipsis">' + res[i].address + '</div>' + 
+               '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
+               '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
+               '<table class="rwd-table">' +
+                  '<tr>' +
+                     '<th>Index</th>' +
+                     '<th>Power Type</th>' +
+                     '<th>Charger Type</th>' +
+                     '<th>Car Type</th>' +
+                     '<th>Status</th>' +
 
-'<div id="toolbar">' +
-		'<select class="form-control">' +
-				'<option value="">Export Basic</option>' +
-				'<option value="all">Export All</option>' +
-				'<option value="selected">Export Selected</option>' +
-		'</select>' +
-'</div>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td data-th="Movie Title">' +  +'</td>' +
+                     '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                     '<td data-th="Genre">'+ chgerType +'</td>' +
+                     '<td data-th="Gross">'+ carType +'</td>' +
+                     '<td data-th="Year">'+ res[i].stat +'</td>' +
+                  '</tr>' +
+               '</table>'+
 
-            '<table id="table" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">' +
-	'<thead>' +
-		'<tr>' +
-			'<th data-field="state" data-checkbox="true"></th>' +
-			'<th data-field="prenom" data-filter-control="input" data-sortable="true">Prénom</th>' +
-			'<th data-field="date" data-filter-control="select" data-sortable="true">Date</th>' +
-			'<th data-field="examen" data-filter-control="select" data-sortable="true">Examen</th>' +
-			'<th data-field="note" data-sortable="true">Note</th>' +
-		'</tr>' +
-	'</thead>' +
-	'<tbody>' +
-		'<tr>' +
-		'<td class="bs-checkbox ">'+
-      '<input data-index="11" name="btSelectItem" type="checkbox">' +
-      '</td>' + 
-			'<td>Valentin</td>' +
-		   '<td>01/10/2015</td>' +
-			'<td>Philosophie</td>' +
-			'<td>10/20</td>' +
-		'</tr>' +
-		'<tr>' +
-			'<td class="bs-checkbox "><input data-index="10" name="btSelectItem" type="checkbox"></td>' +
-			'<td>Eric</td>' +
-			'<td>07/09/2015</td>' +
-			'<td>Mathématiques</td>' +
-			'<td>14/20</td>'
-		'</tr>' +
-		'<tr>' +
-		'<td class="bs-checkbox ">'+
-      '<input data-index="11" name="btSelectItem" type="checkbox">' +
-      '</td>' + 
-			'<td>Valentin</td>' +
-		   '<td>01/10/2015</td>' +
-			'<td>Philosophie</td>' +
-			'<td>10/20</td>' +
-		'</tr>' +
-	'</tbody>' +
-'</table>' +
-            '            </div>' + 
-            '        </div>' + 
-            '    </div>' +
-            '</div>';
+               '</div>' + 
+               '</div>'  
 
             // 마커 위에 커스텀오버레이를 표시합니다
             // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다

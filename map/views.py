@@ -39,7 +39,7 @@ def map_data(request):
     goo_n =  request.GET.get('goo')
     search_str = '서울특별시'
 
-    if sido_n and goo_n:
+    if sido_n or goo_n:
         search_str = sido_n + ' ' + goo_n
 
     for tag in all:
