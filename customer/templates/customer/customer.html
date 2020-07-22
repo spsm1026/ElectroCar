@@ -190,8 +190,9 @@ a{
             </form>
         </div>
         <div class="register-show">
+            <h2>SIGNUP</h2>
             <h2>REGISTER</h2>
-            <form method="post" action="{% url 'register' %}">
+            <form method="post" action="/electrocar_c/register/">
                 {% csrf_token %}
                 <input type="text" name ='useremail' placeholder="Email">
                 <input type="password"  name = 'password1' placeholder="Password">
