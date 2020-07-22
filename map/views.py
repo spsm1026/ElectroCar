@@ -5,15 +5,42 @@ from django.urls import path
 from django.template import loader
 from bs4 import BeautifulSoup
 from .models import Sido, Goo
-
+from selenium import webdriver as wd
 import requests
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+def add(request):
+    input_address = request.GET.get('input_address')
+    marker_address = request.GET.get('marker_address')
+
+    driver = wd.Chrome(executable_path='chromedriver.exe')
+
+    # driver.close() #메모리 정리
+
+    driver.get('https://map.kakao.com/')
+
+    try :
+        element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'li.check_visible'))
+        )
+        driver.find_element_by_id('info.route.waypointSuggest.input0').send_keys(input_address)
+        driver.find_element_by_id('info.route.waypointSuggest.input0').send_keys(marker_address)
+        driver.find_element_by_id('cartab').click()
+        km = driver.find_elements_by_css_selector('.distance > .num')
+        print(km.text)
+            
+    except Exception as e:
+        print('오류 발생', e)
+    return render(request, 'map/map.html', {'km' : km})
 
 def map(request):
     sido_list = Sido.objects.order_by('sido_name')
     seoul = Sido.objects.get(id=1)
     goo_list = Goo.objects.filter(sido=seoul)
 
-    return render(request, 'map/map.html', {"sido_list" : sido_list, 'goo_list': goo_list })
+    return render(request, 'map/map.html', {"sido_list" : sido_list, 'goo_list': goo_list})
 
 def map_data(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D'
@@ -66,3 +93,6 @@ def map_data(request):
 
 def index(request):
     return render(request,'map/index.html')
+
+def test(request):
+    return render(request,'map/test.html')
