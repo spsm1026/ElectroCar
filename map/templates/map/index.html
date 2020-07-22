@@ -41,11 +41,11 @@
         <header class="masthead">
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
-                    <h1 class="mx-auto my-0 text-uppercase" style="font-family: &quot;굴림&quot;;-webkit-text-fill-color: snow;font-weight: bolder;">전기차 충전소 </h1><br>
+                    <h1 class="mx-auto my-0 text-uppercase" style="font-family: Impact,Charcoal,sans-serif;-webkit-text-fill-color: snow;">전기차 충전소 </h1><br>
                     <!-- <h1 class="mx-auto my-0 text-uppercase">전기차 충전소 </h1><br> -->
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">방문을 환영합니다.</h2>
-                    <a class="btn btn-primary js-scroll-trigger" href="http://localhost:8000/electrocar/map">지도로 가기</a><br><br><br>
-                    <a class="btn btn-primary js-scroll-trigger" href="#register">문의사항</a>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5" style="font-family: Impact,Charcoal,sans-serif;" >방문을 환영합니다.</h2>
+                    <a class="btn btn-primary js-scroll-trigger" href="http://localhost:8000/electrocar/map" style="font-family: Impact,Charcoal,sans-serif;">지도로 가기</a><br><br><br>
+                    <a class="btn btn-primary js-scroll-trigger" href="#register" style="font-family: Impact,Charcoal,sans-serif;">문의사항</a>
                 </div>
             </div>
         </header>
@@ -71,6 +71,12 @@
                             <textarea id="mail_content" cols="70" rows="7" placeholder='메일내용을 입력하세요'></textarea>
 
                             <button class="btn btn-primary mx-auto" type="submit" id="btn1">등록</button>
+                            <script>
+                                // $("#btn1").on("click",function() {
+                                //     sendMail();
+                                //     alert('전송 완료 ! ')
+                                // })
+                                // </script>
                             <script>
                                 $('#btn1').click(() => {
                                     alert('전송 완료 ! ')

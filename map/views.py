@@ -5,6 +5,8 @@ from django.urls import path
 from django.template import loader
 from bs4 import BeautifulSoup
 from .models import Sido, Goo
+import smtplib
+from email.mime.text import MIMEText
 
 import requests
 
@@ -79,3 +81,17 @@ def map_data(request):
 
 def index(request):
     return render(request,'map/index.html')
+
+
+def sendMail(from_email, to_email, msg):
+    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    smtp.login(from_email, 'mvewisjmzdhunusn') 
+    msg = MIMEText(msg)
+    msg['Subject'] = '가입인사'
+    msg['To'] = to_email
+    smtp.sendmail(from_email, to_email, msg.as_string())
+    smtp.quit()
+
+def sendMail_2(request):
+    sendMail("22@gmail.com","22@gmail.com","완료 되었습니다.")
+    return render(request, 'map/index.html','')
