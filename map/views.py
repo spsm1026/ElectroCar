@@ -9,6 +9,18 @@ from .models import Sido, Goo
 import requests
 
 def map(request):
+    # param = {'query' : '경기 용인시 기흥구 보정로 87'}
+    # header = {'Authorization' : 'KakaoAK a2011848bb4763ca7e3d79c8a8b41bec'}
+    # req = requests.get('https://dapi.kakao.com/v2/local/search/address.json', params=param, headers = header)
+
+    # obj = req.json()
+
+    # docs = obj['documents']
+    # for doc in docs:
+    #     x = doc['address']['x']
+    #     y = doc['address']['y']
+    #     print(x, y)
+        
     sido_list = Sido.objects.order_by('sido_name')
     seoul = Sido.objects.get(id=1)
     goo_list = Goo.objects.filter(sido=seoul)
@@ -52,6 +64,7 @@ def map_data(request):
             chargespot["use_time"] = str(tag.select_one('useTime').text)
             chargespot["busi_nm"] = str(tag.select_one('busiNm').text)
             chargespot["busi_call"] = str(tag.select_one('busiCall').text)
+            
             #충전기 상태 입력
             if str(tag.select_one('stat').text) in ['2', '3']:
                 chargespot["stat"] = "사용 가능"

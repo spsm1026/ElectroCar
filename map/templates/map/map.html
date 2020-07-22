@@ -139,8 +139,10 @@
          {% endfor %}
       </select>
       <button id='search-btn' type='button'>검색</button>
-   <div id="map" style="width:1000px;height:800px;">
-      
+   <br>
+   <br>
+   <br>
+   <div id="map" style="width:700px;height:500px; margin:auto;">
    </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -164,7 +166,7 @@ var $table = $('#table');
 	});
    
    var marker_list = new Array();
-   var overlay_list = new Array();      
+   var overlay_list = new Array();
 
    //커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
    function closeOverlay(i) {
@@ -196,15 +198,20 @@ var $table = $('#table');
             };
 
             var map = new kakao.maps.Map(container, options);
+            //지도 재설정할 범위 정보를 가지고 있을 LatLngBounds
+            var bounds = new kakao.maps.LatLngBounds();
 
             // 충전소 여러개 마커 출력
             for(var i = 0; i < res.length; i++) {
+               latlng = new kakao.maps.LatLng(res[i].lat, res[i].lng)
                var marker = new kakao.maps.Marker({
                   map: map,
-                  position: new kakao.maps.LatLng(res[i].lat, res[i].lng),
+                  position: latlng,
                   // title: res[i].statNm
                })
                marker_list.push(marker)
+               //latlngbounds 객체에 좌표 추가
+               bounds.extend(latlng)
                var link = res[i].lat + "," + res[i].lng
 
                if (res[i].chgertype == 01){
@@ -236,30 +243,40 @@ var $table = $('#table');
                      var carType = "SM3 ZE"
                   }
                
-               if () {
-
-               }
-                  
-               for(var j=0; j < table_list.length; j++) {
-                  var table = 
-                     '<table class="rwd-table">' +
+               //충전기 정보 테이블 row 생성
+               var charge_content = '';
+               for(var j = 0; j < res.length; j++) {
+                  if (res[i].statNm == res[j].statNm) {
+                     charge_content += 
                      '<tr>' +
-                        '<th>Index</th>' +
-                        '<th>Power Type</th>' +
-                        '<th>Charger Type</th>' +
-                        '<th>Car Type</th>' +
-                        '<th>Status</th>' +
-
-                     '</tr>' +
-                     '<tr>' +
-                        '<td data-th="Movie Title">' + j +'</td>' +
-                        '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-                        '<td data-th="Genre">'+ chgerType +'</td>' +
-                        '<td data-th="Gross">'+ carType +'</td>' +
-                        '<td data-th="Year">'+ res[i].stat +'</td>' +
-                     '</tr>' +
-                     '</table>' 
+                     '<td data-th="Movie Title">' +  +'</td>' +
+                     '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                     '<td data-th="Genre">'+ chgerType +'</td>' +
+                     '<td data-th="Gross">'+ carType +'</td>' +
+                     '<td data-th="Year">'+ res[i].stat +'</td>' +
+                     '</tr>'
+                  }
                }
+               // for(var j=0; j < table_list.length; j++) {
+               //    var table = 
+               //       '<table class="rwd-table">' +
+               //       '<tr>' +
+               //          '<th>Index</th>' +
+               //          '<th>Power Type</th>' +
+               //          '<th>Charger Type</th>' +
+               //          '<th>Car Type</th>' +
+               //          '<th>Status</th>' +
+
+               //       '</tr>' +
+               //       '<tr>' +
+               //          '<td data-th="Movie Title">' + j +'</td>' +
+               //          '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+               //          '<td data-th="Genre">'+ chgerType +'</td>' +
+               //          '<td data-th="Gross">'+ carType +'</td>' +
+               //          '<td data-th="Year">'+ res[i].stat +'</td>' +
+               //       '</tr>' +
+               //       '</table>' 
+               // }
 
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
@@ -284,67 +301,69 @@ var $table = $('#table');
                      '<th>Status</th>' +
 
                   '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">' +  +'</td>' +
-                     '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-                     '<td data-th="Genre">'+ chgerType +'</td>' +
-                     '<td data-th="Gross">'+ carType +'</td>' +
-                     '<td data-th="Year">'+ res[i].stat +'</td>' +
-                  '</tr>' +
+                  charge_content +
+                  '</table>'
+                  // '<tr>' +
+                  //    '<td data-th="Movie Title">' +  +'</td>' +
+                  //    '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                  //    '<td data-th="Genre">'+ chgerType +'</td>' +
+                  //    '<td data-th="Gross">'+ carType +'</td>' +
+                  //    '<td data-th="Year">'+ res[i].stat +'</td>' +
+                  // '</tr>' +
                   
 
-                  '<table class="rwd-table">' +
-                  '<tr>' +
-                     '<th>PowerType</th>' +
-                     '<th>Genre</th>' +
-                     '<th>Year</th>' +
-                     '<th>Gross</th>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">급속</td>' +
-                     '<td data-th="Genre">Adventure, Sci-fi</td>' +
-                     '<td data-th="Year">1977</td>' +
-                     '<td data-th="Gross">$460,935,665</td>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">Howard The Duck</td>'+
-                     '<td data-th="Genre">"Comedy"</td>' +
-                     '<td data-th="Year">1986</td>' +
-                     '<td data-th="Gross">$16,295,774</td>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">American Graffiti</td>' +
-                     '<td data-th="Genre">Comedy, Drama</td>' +
-                     '<td data-th="Year">1973</td>' + 
-                     '<td data-th="Gross">$115,000,000</td>' +
-                  '</tr>' +
-                  '</table>' +
+                  // '<table class="rwd-table">' +
+                  // '<tr>' +
+                  //    '<th>PowerType</th>' +
+                  //    '<th>Genre</th>' +
+                  //    '<th>Year</th>' +
+                  //    '<th>Gross</th>' +
+                  // '</tr>' +
+                  // '<tr>' +
+                  //    '<td data-th="Movie Title">급속</td>' +
+                  //    '<td data-th="Genre">Adventure, Sci-fi</td>' +
+                  //    '<td data-th="Year">1977</td>' +
+                  //    '<td data-th="Gross">$460,935,665</td>' +
+                  // '</tr>' +
+                  // '<tr>' +
+                  //    '<td data-th="Movie Title">Howard The Duck</td>'+
+                  //    '<td data-th="Genre">"Comedy"</td>' +
+                  //    '<td data-th="Year">1986</td>' +
+                  //    '<td data-th="Gross">$16,295,774</td>' +
+                  // '</tr>' +
+                  // '<tr>' +
+                  //    '<td data-th="Movie Title">American Graffiti</td>' +
+                  //    '<td data-th="Genre">Comedy, Drama</td>' +
+                  //    '<td data-th="Year">1973</td>' + 
+                  //    '<td data-th="Gross">$115,000,000</td>' +
+                  // '</tr>' +
+                  // '</table>' +
 
-                  '<table class="rwd-table">' +
-                  '<tr>' +
-                     '<th>PowerType</th>' +
-                     '<th>Genre</th>' +
-                     '<th>Year</th>' +
-                     '<th>Gross</th>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">급속</td>' +
-                     '<td data-th="Genre">Adventure, Sci-fi</td>' +
-                     '<td data-th="Year">1977</td>' +
-                     '<td data-th="Gross">$460,935,665</td>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">Howard The Duck</td>'+
-                     '<td data-th="Genre">"Comedy"</td>' +
-                     '<td data-th="Year">1986</td>' +
-                     '<td data-th="Gross">$16,295,774</td>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">American Graffiti</td>' +
-                     '<td data-th="Genre">Comedy, Drama</td>' +
-                     '<td data-th="Year">1973</td>' + 
-                     '<td data-th="Gross">$115,000,000</td>' +
-                  '</tr>' +
+                  // '<table class="rwd-table">' +
+                  // '<tr>' +
+                  //    '<th>PowerType</th>' +
+                  //    '<th>Genre</th>' +
+                  //    '<th>Year</th>' +
+                  //    '<th>Gross</th>' +
+                  // '</tr>' +
+                  // '<tr>' +
+                  //    '<td data-th="Movie Title">급속</td>' +
+                  //    '<td data-th="Genre">Adventure, Sci-fi</td>' +
+                  //    '<td data-th="Year">1977</td>' +
+                  //    '<td data-th="Gross">$460,935,665</td>' +
+                  // '</tr>' +
+                  // '<tr>' +
+                  //    '<td data-th="Movie Title">Howard The Duck</td>'+
+                  //    '<td data-th="Genre">"Comedy"</td>' +
+                  //    '<td data-th="Year">1986</td>' +
+                  //    '<td data-th="Gross">$16,295,774</td>' +
+                  // '</tr>' +
+                  // '<tr>' +
+                  //    '<td data-th="Movie Title">American Graffiti</td>' +
+                  //    '<td data-th="Genre">Comedy, Drama</td>' +
+                  //    '<td data-th="Year">1973</td>' + 
+                  //    '<td data-th="Gross">$115,000,000</td>' +
+                  // '</tr>' +
                   '</table>' +
 
                '            </div>' + 
@@ -369,9 +388,16 @@ var $table = $('#table');
                      overlay_list[idx].setMap(map);
                   });
                })(i);
-
+               
                closeOverlay(i);
+
+               //지도 범위 조절하기
+               bounds.extend(marker_list[i].getPosition())
             }
+            function setBounds() {
+               map.setBounds(bounds);
+            }
+            setBounds()
          }
       })
    })
@@ -392,15 +418,21 @@ var $table = $('#table');
 
          var map = new kakao.maps.Map(container, options);
 
+         //지도 재설정 범위 정보 latlngbounds
+         var bounds = new kakao.maps.LatLngBounds();
+
          // 충전소 여러개 마커 출력
          for(var i = 0; i < res.length; i++) {
+            latlng = new kakao.maps.LatLng(res[i].lat, res[i].lng);
             var marker = new kakao.maps.Marker({
                map: map,
-               position: new kakao.maps.LatLng(res[i].lat, res[i].lng),
+               position: latlng,
                // title: res[i].statNm
             })
             marker_list.push(marker)
 
+            //latlngbounds 객체에 좌표 추가
+            bounds.extend(latlng);
             var content = '<div class="wrap">' + 
             '    <div class="info">' + 
             '        <div class="title">' + 
@@ -488,8 +520,13 @@ var $table = $('#table');
                });
             })(i);
             closeOverlay(i);
+            
+            
          }
-         
+         function setBounds() {
+            map.setBounds(bounds);
+         }
+         setBounds()
       }
    })
 

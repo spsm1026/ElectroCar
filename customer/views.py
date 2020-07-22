@@ -2,11 +2,12 @@ from django.shortcuts import render
 from .models import User
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-# Create your views here.
+from map.models import Carcharger
 
 # main.html 을 불러주는 함수
 def home(request):
     return render(request, 'customer/test.html')
+
 # customer.html 을 불러주는 함수
 def create(request):
     return render(request, 'customer/customer.html')
@@ -27,6 +28,7 @@ def register(request):
 
 # 로그인
 def login(request):
+    car_charge_list = Carcharger.objects.order_by('id')
     if request.method == 'POST':
         useremail = request.POST['useremail']
         password = request.POST['password']
@@ -40,7 +42,7 @@ def login(request):
             return render(request, 'customer/login_fail.html')  
        
     else:
-        return render(request, 'customer/customer.html')
+        return render(request, 'customer/customer.html', {'car_charge_list' : car_charge_list})
 
 # 로그아웃
 def logout(request):
