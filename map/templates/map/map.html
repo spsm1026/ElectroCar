@@ -9,7 +9,7 @@
 		.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
 		.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
 		.info .close:hover {cursor: pointer;}
-		.info .body {width: 500px; height: 280px;overflow: auto;}
+		.info .body {width: 500px; height: 280px;overflow: scroll;}
 		.info .desc {position: relative; margin: 5px 5px 5px 5px; height: 143px;}
 		.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 		.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
@@ -143,8 +143,10 @@
       
    </div>
 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805&libraries=services"></script>
 <script>
    
 
@@ -190,13 +192,13 @@ var $table = $('#table');
             console.log(goo)
             $('#map').empty();
 
-            var container = document.getElementById('map');
-            var options = {
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
                center: new kakao.maps.LatLng(res[0].lat, res[0].lng),
                level: 3
             };
 
-            var map = new kakao.maps.Map(container, options);
+            var map = new kakao.maps.Map(mapContainer, mapOption)
 
             // 충전소 여러개 마커 출력
             for(var i = 0; i < res.length; i++) {
@@ -209,6 +211,10 @@ var $table = $('#table');
                var link = res[i].lat + "," + res[i].lng
 
                
+
+      
+
+
 
                if (res[i].chgertype == 01){
                   var chgertype = "DC 차데모"
@@ -238,33 +244,22 @@ var $table = $('#table');
                      var chgerType = "AC 3상"
                      var carType = "SM3 ZE"
                   }
-               
-    
-                  
-               // for(var j=0; j < table_list.length; j++) {
-               //    var table = 
-               //       '<table class="rwd-table">' +
-               //       '<tr>' +
-               //          '<th>Index</th>' +
-               //          '<th>Power Type</th>' +
-               //          '<th>Charger Type</th>' +
-               //          '<th>Car Type</th>' +
-               //          '<th>Status</th>' +
 
-               //       '</tr>' +
-               //       '<tr>' +
-               //          '<td data-th="Movie Title">' + j +'</td>' +
-               //          '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-               //          '<td data-th="Genre">'+ chgerType +'</td>' +
-               //          '<td data-th="Gross">'+ carType +'</td>' +
-               //          '<td data-th="Year">'+ res[i].stat +'</td>' +
-               //       '</tr>' +
-               //       '</table>' 
-               // }
-               
-               
-                  
 
+                  
+   $('#button').click(function() {
+      $.ajax({
+         url: '/electrocar/add/',
+         data: { 
+            'input_address': $('#addr').val(), 
+            'marker_address': $(res[i].address).val() 
+         },
+         success: function(res) {
+            var km = res
+         }
+      });
+   })
+               
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
                '        <div class="title">' + 
@@ -295,39 +290,22 @@ var $table = $('#table');
                      '<td data-th="Gross">'+ carType +'</td>' +
                      '<td data-th="Year">'+ res[i].stat +'</td>' +
                   '</tr>' +
-                  
-
-                  '<table class="rwd-table">' +
-                  '<tr>' +
-                     '<th>PowerType</th>' +
-                     '<th>Genre</th>' +
-                     '<th>Year</th>' +
-                     '<th>Gross</th>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">아아</td>' +
-                     '<td data-th="Genre">Adventure, Sci-fi</td>' +
-                     '<td data-th="Year">1977</td>' +
-                     '<td data-th="Gross">$460,935,665</td>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">Howard The Duck</td>'+
-                     '<td data-th="Genre">"Comedy"</td>' +
-                     '<td data-th="Year">1986</td>' +
-                     '<td data-th="Gross">$16,295,774</td>' +
-                  '</tr>' +
-                  '<tr>' +
-                     '<td data-th="Movie Title">American Graffiti</td>' +
-                     '<td data-th="Genre">Comedy, Drama</td>' +
-                     '<td data-th="Year">1973</td>' + 
-                     '<td data-th="Gross">$115,000,000</td>' +
-                  '</tr>' +
                   '</table>' +
+                  '<div id="km">' +
+                  '<input id="addr" type="text">' + 
+                  '<button id="day">Cal</button>' +
+                  '<p id="result">' + 'cal_result' + '</p>' +
+                  '</div>' + 
                '            </div>' + 
                '        </div>' + 
                '    </div>' +                
                '</div>';
                
+             
+         
+               // addrBtn.onclick = function(){
+               //    var addr = document.querySelector("#addr").value;
+               // };
 
                // 마커 위에 커스텀오버레이를 표시합니다
                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -348,10 +326,28 @@ var $table = $('#table');
                })(i);
 
                closeOverlay(i);
+
+
+               
             }
          }
       })
-   })
+   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    $.ajax({
       url: '/electrocar/mapdata/',
@@ -390,58 +386,57 @@ var $table = $('#table');
             '           </div>' + 
             '            <div class="desc">' + 
             '                <div class="ellipsis">' + res[i].address + '</div>' + 
-            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
+            // '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
             '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
             '<div class="container">' +
-'<h1>Bootstrap Table</h1>' +
-'<p><a href="http://jsfiddle.net/wenyi/e3nk137y/3178/">Data Checkbox</a>, pour cocher les éléments à sélectionner, <a href="https://github.com/wenzhixin/bootstrap-table-examples/blob/master/extensions/filter-control.html">extension Filter control</a>, pour les filtres via les colonnes, <a href="https://github.com/kayalshri/tableExport.jquery.plugin">extension Data export</a> pour exporter</p>' +
+            '<h1>Bootstrap Table</h1>' +
+            '<p><a href="http://jsfiddle.net/wenyi/e3nk137y/3178/">Data Checkbox</a>, pour cocher les éléments à sélectionner, <a href="https://github.com/wenzhixin/bootstrap-table-examples/blob/master/extensions/filter-control.html">extension Filter control</a>, pour les filtres via les colonnes, <a href="https://github.com/kayalshri/tableExport.jquery.plugin">extension Data export</a> pour exporter</p>' +
 
-'<div id="toolbar">' +
-		'<select class="form-control">' +
-				'<option value="">Export Basic</option>' +
-				'<option value="all">Export All</option>' +
-				'<option value="selected">Export Selected</option>' +
-		'</select>' +
-'</div>' +
-
-            '<table id="table" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">' +
-	'<thead>' +
-		'<tr>' +
-			'<th data-field="state" data-checkbox="true"></th>' +
-			'<th data-field="prenom" data-filter-control="input" data-sortable="true">Prénom</th>' +
-			'<th data-field="date" data-filter-control="select" data-sortable="true">Date</th>' +
-			'<th data-field="examen" data-filter-control="select" data-sortable="true">Examen</th>' +
-			'<th data-field="note" data-sortable="true">Note</th>' +
-		'</tr>' +
-	'</thead>' +
-	'<tbody>' +
-		'<tr>' +
-		'<td class="bs-checkbox ">'+
-      '<input data-index="11" name="btSelectItem" type="checkbox">' +
-      '</td>' + 
-			'<td>Valentin</td>' +
-		   '<td>01/10/2015</td>' +
-			'<td>Philosophie</td>' +
-			'<td>10/20</td>' +
-		'</tr>' +
-		'<tr>' +
-			'<td class="bs-checkbox "><input data-index="10" name="btSelectItem" type="checkbox"></td>' +
-			'<td>Eric</td>' +
-			'<td>07/09/2015</td>' +
-			'<td>Mathématiques</td>' +
-			'<td>14/20</td>'
-		'</tr>' +
-		'<tr>' +
-		'<td class="bs-checkbox ">'+
-      '<input data-index="11" name="btSelectItem" type="checkbox">' +
-      '</td>' + 
-			'<td>Valentin</td>' +
-		   '<td>01/10/2015</td>' +
-			'<td>Philosophie</td>' +
-			'<td>10/20</td>' +
-		'</tr>' +
-	'</tbody>' +
-'</table>' +
+            '<div id="toolbar">' +
+                  '<select class="form-control">' +
+                        '<option value="">Export Basic</option>' +
+                        '<option value="all">Export All</option>' +
+                        '<option value="selected">Export Selected</option>' +
+                  '</select>' +
+            '</div>' +
+                        '<table id="table" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">' +
+               '<thead>' +
+                  '<tr>' +
+                     '<th data-field="state" data-checkbox="true"></th>' +
+                     '<th data-field="prenom" data-filter-control="input" data-sortable="true">Prénom</th>' +
+                     '<th data-field="date" data-filter-control="select" data-sortable="true">Date</th>' +
+                     '<th data-field="examen" data-filter-control="select" data-sortable="true">Examen</th>' +
+                     '<th data-field="note" data-sortable="true">Note</th>' +
+                  '</tr>' +
+               '</thead>' +
+               '<tbody>' +
+                  '<tr>' +
+                  '<td class="bs-checkbox ">'+
+                  '<input data-index="11" name="btSelectItem" type="checkbox">' +
+                  '</td>' + 
+                     '<td>Valentin</td>' +
+                     '<td>01/10/2015</td>' +
+                     '<td>Philosophie</td>' +
+                     '<td>10/20</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                     '<td class="bs-checkbox "><input data-index="10" name="btSelectItem" type="checkbox"></td>' +
+                     '<td>Eric</td>' +
+                     '<td>07/09/2015</td>' +
+                     '<td>Mathématiques</td>' +
+                     '<td>14/20</td>'
+                  '</tr>' +
+                  '<tr>' +
+                  '<td class="bs-checkbox ">'+
+                  '<input data-index="11" name="btSelectItem" type="checkbox">' +
+                  '</td>' + 
+                     '<td>Valentin</td>' +
+                     '<td>01/10/2015</td>' +
+                     '<td>Philosophie</td>' +
+                     '<td>10/20</td>' +
+                  '</tr>' +
+               '</tbody>' +
+            '</table>' +
             '            </div>' + 
             '        </div>' + 
             '    </div>' +
