@@ -21,8 +21,33 @@
             <div class="container">
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">Signup</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#projects">Login</a></li>
+                        {% if request.session.useremail %}
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#" name = "logout" id="logout">Logout</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="http://localhost:8000/electrocar_c/login/">Login</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="http://localhost:8000/electrocar_c/register/">Signup</a></li>
+                        {% endif %}                      
+                        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                        <script>
+                        $("#logout").on("click",function() {
+                            location.href = "/electrocar_c/logout";
+                        })
+                        
+                        // $('#logout').click(() => {
+                        //     $.ajax({
+                        //             type: 'POST',
+                        //             url: "/customer/views",
+                        //             success: function (data) {
+                        //                 logout(data);
+                                    
+                        //             },
+                        //             error : function() {
+                        //             alert("로그인 하지 않았습니다.");   
+                        //             }
+                        //     });
+                        //         return false;
+                        // });
+                        </script>
                     </ul>
                 </div>
             </div>
@@ -32,7 +57,7 @@
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
                     <h1 class="mx-auto my-0 text-uppercase">전기차 충전소 </h1><br>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">로그인 후 시작해 주십시오.</h2>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">방문을 환영합니다.</h2>
                     <a class="btn btn-primary js-scroll-trigger" href="http://localhost:8000/electrocar/map">지도로 가기</a><br><br><br>
                     <a class="btn btn-primary js-scroll-trigger" href="#register">새로운 정보 받아보기</a>
                 </div>
@@ -55,7 +80,12 @@
                         <h2 class="text-black mb-5">갱신되는 충전소 정보를 메일로 보내드립니다 ! </h2>
                         <form class="form-inline d-flex" action="http://localhost:8000/electrocar/index/" method="GET">
                             <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="email" placeholder="이메일을 입력하시오." />
-                            <button class="btn btn-primary mx-auto" type="submit">등록</button>
+                            <button class="btn btn-primary mx-auto" type="submit" id="btn1">등록</button>
+                            <script>
+                                $('#btn1').click(() => {
+                                    alert('등록 완료 ! ')
+                                })
+                            </script>
                         </form>
                     </div>
                 </div>

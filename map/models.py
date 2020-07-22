@@ -14,7 +14,6 @@ class Goo(models.Model):
         return self.goo_name
 
 class Carcharger(models.Model):
-    car_company = models.CharField(max_length=200)
     car_name = models.CharField(max_length=200)
-    dc = models.BinaryField(max_length=1)
-    ac = models.BinaryField(max_length=1)
+    car_chger_type = models.CharField(max_length=10, null=True) 
+    # 1 : DC 차데모, 2 : DC 콤보, 3 : DC 차데모 + DC 콤보, 4 : AC3상

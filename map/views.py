@@ -7,9 +7,13 @@ from bs4 import BeautifulSoup
 from .models import Sido, Goo
 from selenium import webdriver as wd
 import requests
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import time
+from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
+import pyautogui
+from bs4 import BeautifulSoup
+from datetime import datetime
+
 
 def add(request):
     input_address = request.GET.get('input_address')
@@ -19,28 +23,48 @@ def add(request):
 
     # driver.close() #메모리 정리
 
-    driver.get('https://map.kakao.com/')
+    start = input_address 
+    finish = marker_address
+    data = []
 
-    try :
-        element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'li.check_visible'))
-        )
-        driver.find_element_by_id('info.route.waypointSuggest.input0').send_keys(input_address)
-        driver.find_element_by_id('info.route.waypointSuggest.input0').send_keys(marker_address)
-        driver.find_element_by_id('cartab').click()
-        km = driver.find_elements_by_css_selector('.distance > .num')
-        print(km.text)
-            
-    except Exception as e:
-        print('오류 발생', e)
-    return render(request, 'map/map.html', {'km' : km})
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('lang=ko_KR')
+
+
+    driver = webdriver.Chrome('chromedriver.exe')
+
+    driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
+    delay = 3
+    driver.implicitly_wait(delay)
+    # driver.find_element_by_xpath('//*[@id="intro_popup_close"]/span').click()
+    # driver.implicitly_wait(5)
+    driver.find_element_by_xpath('//*[@id="container"]/div[1]/shrinkable-layout/directions-layout/directions-result/div[1]/ul/li[2]/a').click()
+    driver.implicitly_wait(5)
+    el = driver.find_element_by_id('directionStart0')
+    el.send_keys(start)
+    time.sleep(0.02)
+    el.send_keys(Keys.ENTER)
+    time.sleep(0.2)
+    al = driver.find_element_by_id('directionGoal1')
+    al.send_keys(finish)
+    time.sleep(0.02)
+    al.send_keys(Keys.ENTER)
+    time.sleep(0.2)
+    driver.find_element_by_xpath('//*[@id="container"]/div[1]/shrinkable-layout/directions-layout/directions-result/div[1]/directions-search/div[2]/button[3]').click()
+    time.sleep(0.3)
+
+    km = driver.find_element_by_css_selector('div.inner_scroll span.summary_text').text
+    
+    return JsonResponse({'km' : km}, safe=False)
 
 def map(request):
     sido_list = Sido.objects.order_by('sido_name')
     seoul = Sido.objects.get(id=1)
     goo_list = Goo.objects.filter(sido=seoul)
 
-    return render(request, 'map/map.html', {"sido_list" : sido_list, 'goo_list': goo_list})
+    return render(request, 'map/map.html', {"sido_list" : sido_list, 'goo_list': goo_list })
 
 def map_data(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D'

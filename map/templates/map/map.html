@@ -174,6 +174,23 @@ var $table = $('#table');
       overlay = overlay_list[i];
       overlay.setMap(null);
    }
+   function get_km(obj) {
+      marker_address = $(obj).parents('.desc').find('.ellipsis').not('.jibun').text()
+      // console.log(marker_address)
+      $.ajax({
+         url: '/electrocar/add/',
+         data: { 
+            'input_address': $('#address').val(),
+            'marker_address': marker_address 
+         },
+         success: function(res) {
+            var km = res.km
+            $('[id=result]:last').text(km)
+            console.log(input_address)
+            console.log(marker_address)
+         }
+      });
+   }
 
    $('#search-btn').click(function() {
       var sido = $('#select_sido').val();
@@ -246,19 +263,10 @@ var $table = $('#table');
                   }
 
 
+          
+
                   
-   $('#button').click(function() {
-      $.ajax({
-         url: '/electrocar/add/',
-         data: { 
-            'input_address': $('#addr').val(), 
-            'marker_address': $(res[i].address).val() 
-         },
-         success: function(res) {
-            var km = res
-         }
-      });
-   })
+
                
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
@@ -292,15 +300,16 @@ var $table = $('#table');
                   '</tr>' +
                   '</table>' +
                   '<div id="km">' +
-                  '<input id="addr" type="text">' + 
-                  '<button id="day">Cal</button>' +
-                  '<p id="result">' + 'cal_result' + '</p>' +
+                  '<input id="address" type="text">' + 
+                  '<button id="cal" onclick="get_km(this)">Cal</button>' +
+                  '<p id="result">' + '</p>' +
                   '</div>' + 
                '            </div>' + 
                '        </div>' + 
                '    </div>' +                
                '</div>';
                
+
              
          
                // addrBtn.onclick = function(){
@@ -322,6 +331,8 @@ var $table = $('#table');
                   kakao.maps.event.addListener(marker_list[idx], 'click', function() {
                      console.log(idx)
                      overlay_list[idx].setMap(map);
+
+                    
                   });
                })(i);
 
@@ -332,20 +343,8 @@ var $table = $('#table');
             }
          }
       })
+
    });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
