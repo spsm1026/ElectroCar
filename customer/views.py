@@ -7,6 +7,10 @@ from django.http import HttpResponseRedirect
 # main.html 을 불러주는 함수
 def home(request):
     return render(request, 'customer/test.html')
+
+def home2(request):
+    return render(request, 'customer/test2.html')
+
 #new_pw.html 를 불러주는 함수
 def find(request):
     return render(request, 'customer/new_pw.html')
@@ -51,8 +55,7 @@ def login(request):
 def logout(request):
     request.session['useremail'] = None
     request.session.clear()
-
-    return HttpResponseRedirect('electrocar_c/home')
+    return HttpResponseRedirect('/electrocar_c/home2')
     # return HttpResponseRedirect(reverse('home'))
 
 # 비밀번호 찾기
