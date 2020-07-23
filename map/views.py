@@ -100,6 +100,10 @@ def add2(request):
     time.sleep(0.3)
 
     km2 = driver.find_element_by_css_selector('div.inner_scroll span.summary_text').text
+    km2 = km2[:-2]
+    km2 = float(km2)
+
+    km2 = km2 * 11.32
     
     return JsonResponse({'km2' : km2}, safe=False)
 

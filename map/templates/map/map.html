@@ -2,19 +2,19 @@
 <html>
 
 	<style>
-		.wrap {position: absolute;left: 0;bottom: 40px;width: 500px;height: 310px;margin-left: -260px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+		.wrap {position: absolute;left: 0;bottom: 40px;width: 500px;height: 300px;margin-left: -260px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
 		.wrap * {padding: 0;margin: 0;}
-		.wrap .info {width: 500px; height: 300px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+		.wrap .info {width: 500px; height: 288px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
 		.wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
 		.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
 		.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
 		.info .close:hover {cursor: pointer;}
-		.info .body {width: 500px; height: 280px;overflow: scroll;}
+		.info .body {width: 500px; height: 280px; overflow-x:scroll; overflow-y:auto; scroll-margin-bottom: 5px;}
 		.info .desc {position: relative; margin: 5px 5px 5px 5px; height: 143px;}
 		.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 		.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
 		.info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
-		.info:after {content: '';position: absolute;margin-left: 0px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+		.info:after {content: '';position: absolute; margin-left: 0px; left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 		.info .link {color: #5085BB;}
 
       .container {
@@ -28,8 +28,9 @@
 }
 
       @import "compass/css3";
+      @import url("https://fonts.googleapis.com/css?family=Montserrat");
       @import 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700';
-      .rwd-table {margin: 1em 0; min-width: 475px;}
+      .rwd-table {position: relative; margin-top: 1em; margin-bottom: 1em; min-width: 475px; }
       .rwd-table tr {border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;}
       .rwd-table th {display: none;}
       .rwd-table td {display: block;}
@@ -66,6 +67,7 @@
          text-rendering: optimizeLegibility;
          color: #444;
          background: #eee;
+         
       }
       h1 {
          font-weight: normal;
@@ -106,7 +108,110 @@
       padding: 0px;
       margin: 0px;
       }
+
+      @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap');
+      #km {
+         /* font-family: "Montserrat", sans-serif; */
+         font-family: "Nanum Gothic", sans-serif;
+         font-size: 10px;
+         background-color: #eee;
+         color: #555;
+         position: relative;
+         bottom: 10px;
+         margin-top: 10px;
+         margin-bottom: 20px;
+      }
+      .ktitle{
+         font-family: "Nanum Gothic", sans-serif;
+         font-size: 16px;
+         font-weight: bold;
+         position: relative;
+         left: 5px;
+         padding: 2px;
+      }
+
+      .inputhd {
+         font-family: "Nanum Gothic", sans-serif;
+         font-size: 10px;
+         position: relative;
+         left: 10px;
+         right: 10px;
+      }
+
+      #result, #result2 {
+         font-family: "Nanum Gothic", sans-serif;
+         font-size: 13px;
+         position: relative;
+         left: 10px;
+         padding: 5px;
+      }
       
+      :root {
+      --main-color: #084B8A;
+      --alt-color: #01A9DB;
+      }
+      
+      #cal {
+      font-family: "Montserrat", sans-serif;
+      cursor: pointer;
+      width: 70px;
+      height: 30px;
+      font-size: 1rem;
+      background-color: var(--alt-color);
+      color: #fff;
+      outline: none;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      /* margin: 10px 0; */
+      position: relative;
+         left: 20px;
+      }
+
+      #cal2 {
+      font-family: "Montserrat", sans-serif;
+      cursor: pointer;
+      width: 70px;
+      height: 30px;
+      font-size: 1rem;
+      background-color: var(--alt-color);
+      color: #fff;
+      outline: none;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+         left: 20px;
+         bottom: 10px;
+      }
+
+      #search-btn {
+      font-family: "Montserrat", sans-serif;
+      cursor: pointer;
+      width: 100px;
+      height: 40px;
+      font-size: 1rem;
+      background-color: var(--alt-color);
+      color: #fff;
+      outline: none;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+         left: 20px;
+         top: 1px;
+         bottom: 10px;
+      }
+
+      
+      #cal:hover, #cal2:hover, #search-btn:hover {
+      background-color: var(--main-color);
+      }
+
+      #ad_line {
+         height: 1px;
+      }
+
    </style>
    
    <head>
@@ -172,7 +277,7 @@
             {% endfor %}
          </select>
          &nbsp;&nbsp;&nbsp;&nbsp;
-         <button id='search-btn' type='button' style="width:120px; height:50px;">검색</button>
+         <button id='search-btn' type='button'>Search</button>
             <br>
             <br>
             <br>
@@ -197,7 +302,7 @@
             <option value={{goo}}>{{goo.goo_name}}</option>
          {% endfor %}
       </select>
-      <button id='search-btn' type='button'>검색</button>
+      <button id='search-btn' type='button'>Search</button>
    <br>
    <br>
    <br>
@@ -246,9 +351,7 @@ var $table = $('#table');
          },
          success: function(res) {
             var km = res.km
-            $('[id=result]:last').text(km)
-            console.log(input_address)
-            console.log(marker_address)
+            $('[id=result]:last').text('약 ' + km + '가 소요됩니다.') 
          }
       });
    }
@@ -262,7 +365,7 @@ var $table = $('#table');
          },
          success: function(res2) {
             var km2 = res2.km2
-            $('#result2').text(km2)
+            $('#result2').text('약 ' + km2 + '원입니다.')
          }
       });
    }
@@ -284,8 +387,8 @@ var $table = $('#table');
             console.log(goo)
             $('#map').empty();
 
-            var mapContainer = document.getElementById('map');
-            var mapOption = {
+            var container = document.getElementById('map');
+            var options = {
                center: new kakao.maps.LatLng(res[0].lat, res[0].lng),
                level: 3
             };
@@ -378,15 +481,18 @@ var $table = $('#table');
                      '<td data-th="Gross">'+ carType +'</td>' +
                      '<td data-th="Year">'+ res[i].stat +'</td>' +
                   '</tr>' +
-                  '</table>' +
+                  '</table>' + 
+                  '<div id="ad_line"></div>' +
                   '<div id="km">' +
-                  '<input id="address" type="text">' + 
+                  '<p class = "ktitle">충전소 거리 계산</p>' +
+                  '<input class = "inputhd" id="address" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + 
                   '<button id="cal" onclick="get_km(this)">Cal</button>' +
-                  '<p id="result">' + '</p>' + '<br>' +
-                  '<input id="address1" type="text">' + 
-                  '<input id="address2" type="text">' + 
-                  '<button id="cal2" onclick="get_km2()">Cal2</button>' +
-                  '<p id="result2">' + '</p>' +
+                  '<p id="result">' + '해당 충전소까지의 거리입니다.' + '</p>' + '<br>' +
+                  '<p class = "ktitle">주행요금</p>' +
+                  '<input class = "inputhd" id="address1" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + '</br>' +
+                  '<input class = "inputhd" id="address2" type="text" size=50 placeholder="도착 지점을 입력해주세요.">' + 
+                  '<button id="cal2" onclick="get_km2()">Cal</button>' +
+                  '<p id="result2">'  + '해당 거리까지의 예상 주행요금입니다.' + '</p>' +
                   '</div>' + 
                '            </div>' + 
                '        </div>'  
