@@ -106,7 +106,9 @@ def add2(request):
     km2 = km2[:-2]
     km2 = float(km2)
 
-    if input_car == "코나":
+    if input_car == "기본연비":
+        cal_re = ( 255.7 / 5.5 ) * km2
+    elif input_car == "코나":
         cal_re = ( 255.7 / 5.6 ) * km2
     elif input_car == "레이":
         cal_re = ( 255.7 / 5.0 ) * km2
