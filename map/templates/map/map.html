@@ -142,7 +142,16 @@
          font-size: 13px;
          position: relative;
          left: 10px;
-         padding: 5px;
+         /* padding-bottom: 5px; */
+      }
+
+      #notify {
+         font-family: "Nanum Gothic", sans-serif;
+         font-size: 10px;
+         position: relative;
+         text-align: center; 
+         bottom: 10px;
+         /* padding-bottom: 5px; */
       }
       
       :root {
@@ -180,8 +189,8 @@
       border-radius: 20px;
       transition: all 0.3s ease;
       position: relative;
-         left: 20px;
-         bottom: 10px;
+         left: 280px;
+         bottom: 57px;
       }
 
       #search-btn {
@@ -210,6 +219,79 @@
       #ad_line {
          height: 1px;
       }
+
+      #ad_line2 {
+         height: 3px;
+      }
+
+      #ad_line2 {
+         height: 5px;
+      }
+
+      .inputcar {
+         font-family: "Nanum Gothic", sans-serif;
+         font-size: 10px;
+         position: relative;
+         left: 10px;
+         right: 10px;
+      }
+
+      @import "compass/css3";
+      .ball {
+         position: absolute;
+         top: 0;
+         left: -20px;
+         width: 10px;
+         height: 10px;
+         border-radius: 100%;
+         background:  #EFFBFB;
+         margin-left: -5px;
+         transition-property: left, top;
+         transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1), cubic-bezier(0.25, 0.1, 0.25, 1);
+      }
+      p {
+         font-family: "Nanum Gothic", sans-serif;
+         position: relative;
+         margin: 0;
+         display: inline-block;
+         text-align: center;
+         font-size: 40px;
+         outline: none;
+      }
+      .word.lit {
+         color:  #EFFBFB;
+         text-shadow: 0px 0px 3px  #EFFBFB;
+      }
+ 
+      .light-switch {
+         position: absolute;
+         top: 10px;
+         left: 10px;
+         font-size: 50px;
+         color: #aaa;
+         cursor: pointer;
+      }
+      .light-switch:hover {
+         color: #999;
+      }
+      .hint:not(.preload) {
+         transition: top 1s;
+      }
+      .hint.open {
+         top: 0px;
+      }
+      .hint > i {
+         margin: 0 5px;
+         background: #ccc;
+         color: #222;
+         border-radius: 100%;
+         display: inline-block;
+         line-height: 17px;
+         width: 17px;
+         height: 17px;
+      }
+
+
 
    </style>
    
@@ -278,7 +360,10 @@
    <!-- Navigation -->
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="http://localhost:8000/electrocar/map" style="font-size : 24px;">주소로 검색</a>
+         
+            <p href="http://localhost:8000/electrocar/map" class="bouncer" contenteditable>Electric Vehicle, Everyone's Network </p>
+         </div>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -299,20 +384,19 @@
               <a class="nav-link" href="#">Bookmark</a>
             </li>
           </ul>
-        </div>
+       
       </div>
    </nav>
 
   <!-- Page Content -->
    <div class="container">
       <div class="row" style="display : block;">
-         
-         <span style="font-size:20px; font-weight: bolder; float:left; padding-left: 5px; height:50px;">    지역 선택</span>
+         <span style="font-size:20px; font-weight: bolder; float:left; padding-left: 5px; height:50px;">충전소 현황</span>
          <br>
          <br>
-         <select name="sido1" id="sido1" style="width:120px; height:50px;"></select>
+         <select name="sido1" id="sido1" style="width:120px; height:35px;"></select>
          &nbsp;&nbsp;&nbsp;&nbsp;
-         <select name="gugun1" id="gugun1" style="width:120px; height:50px;"></select>
+         <select name="gugun1" id="gugun1" style="width:120px; height:35px;"></select>
          <!-- <select id="select_sido" style="width:120px; height:50px;" title="시도 선택" class="search_sido">
             <option value>시도 선택</option>
             {% for sido in sido_list %}
@@ -409,12 +493,13 @@ var $table = $('#table');
       $.ajax({
          url: '/electrocar/add2/',
          data: { 
+            'input_car': $('.inputcar').val(),
             'input_address1': $('#address1').val(),
             'input_address2': $('#address2').val(),
          },
          success: function(res2) {
-            var km2 = res2.km2
-            $('#result2').text('약 ' + km2 + '원입니다.')
+            var cal_re = res2.cal_re
+            $('#result2').text('약 ' + cal_re + '원입니다.')
          }
       });
    }
@@ -459,7 +544,7 @@ var $table = $('#table');
 
                if (res[i].chgertype == 01){
                   var chgertype = "DC 차데모"
-                  var carType = "블루온, 레이, 쏘울, 아이오닉"
+                  var carType = "레이, 쏘울, 아이오닉"
                   }  
                   else if (res[i].chagertype == 02) {
                      var chgerType = "AC 완속"
@@ -471,15 +556,15 @@ var $table = $('#table');
                   }
                   else if (res[i].chagertype == 04) {
                      var chgerType = "DC 콤보"
-                     var carType = "스파크, 볼트, i3"
+                     var carType = "코나, 스파크, 볼트, i3"
                   }
                   else if (res[i].chagertype == 05) {
                      var chgerType = "DC 차데모" + "<br>" + "DC 콤보"
-                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "스파크, 볼트, i3"
+                     var carType = "레이, 쏘울, 아이오닉" + "<br>" + "코나, 스파크, 볼트, i3"
                   }
                   else if (res[i].chagertype == 06) {
                      var chgerType = "DC 차데모" + "<br>" + "AC 3상" + "<br>" + "DC 콤보"
-                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" +  "SM3 ZE" + "<br>" + "스파크, 볼트, i3"
+                     var carType = "레이, 쏘울, 아이오닉" + "<br>" +  "SM3 ZE" + "<br>" + "코나, 스파크, 볼트, i3"
                   }
                   else if (res[i].chagertype == 07) {
                      var chgerType = "AC 3상"
@@ -513,30 +598,54 @@ var $table = $('#table');
                '                <div class="ellipsis">' + res[i].address + '</div>' + 
                '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
                '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
-               '<table class="rwd-table">' +
-                  '<tr>' +
-                     '<th>Index</th>' +
-                     '<th>Power Type</th>' +
-                     '<th>Charger Type</th>' +
-                     '<th>Car Type</th>' +
-                     '<th>Status</th>' +
-                     '</tr>' +
-                     content_table +
-               '</table>' +
-                  '<div id="ad_line"></div>' +
-                  '<div id="km">' +
-                  '<p class = "ktitle">충전소 거리 계산</p>' +
-                  '<input class = "inputhd" id="address" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + 
-                  '<button id="cal" onclick="get_km(this)">Cal</button>' +
-                  '<p id="result">' + '해당 충전소까지의 거리입니다.' + '</p>' + '<br>' +
-                  '<p class = "ktitle">주행요금</p>' +
-                  '<input class = "inputhd" id="address1" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + '</br>' +
-                  '<input class = "inputhd" id="address2" type="text" size=50 placeholder="도착 지점을 입력해주세요.">' + 
-                  '<button id="cal2" onclick="get_km2()">Cal</button>' +
-                  '<p id="result2">'  + '해당 거리까지의 예상 주행요금입니다.' + '</p>' +
-                  '</div>' + 
-               '            </div>' + 
-               '        </div>'  
+                           '<table class="rwd-table">' +
+                                 '<tr>' +
+                                    '<th>Index</th>' +
+                                    '<th>Power Type</th>' +
+                                    '<th>Charger Type</th>' +
+                                    '<th>Car Type</th>' +
+                                    '<th>Status</th>' +
+                                    '</tr>' +
+                                    content_table +
+                                 '</table>' +
+                           '<div id="ad_line"></div>' +
+                           '<div id="km">' +
+                              '<div id="ad_line3"></div>' +
+                              '<p class = "ktitle">충전소 거리 계산</p>' +
+                              '<input class = "inputhd" id="address" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + 
+                              '<button id="cal" onclick="get_km(this)">Cal</button>' +
+                              '<p id="result">' + '해당 충전소까지의 거리입니다.' + '</p>' + '<br>' +
+                              '<p class = "ktitle">주행요금</p>' +
+                                 '<select class = "inputcar">' +
+                                    '<option value="기본연비">기본값(5.5km/kWh)</option>' +
+                                    '<option value="코나">코나</option>' +
+                                    '<option value="레이">레이</option>' +
+                                    '<option value="쏘울">쏘울</option>' +
+                                    '<option value="아이오닉">아이오닉</option>' +
+                                    '<option value="볼트">볼트</option>' +
+                                    '<option value="SM3Z.E.">SM3Z.E.</option>' +
+                                    '<option value="i3">i3</option>' +
+                                    '<option value="스파크">스파크</option>' +
+                                 '</select>' + '<br>' +
+                              '<div id="ad_line2"></div>' +
+                              '<input class = "inputhd" id="address1" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + '</br>' +
+                              '<div id="ad_line2"></div>' +
+                              '<input class = "inputhd" id="address2" type="text" size=50 placeholder="도착 지점을 입력해주세요.">' + '<br>' +
+                              '<div id="ad_line2"></div>' +
+                              '<div>' + 
+                                 '<p id="result2">'  + '해당 거리까지의 예상 주행요금입니다.' + '</p>' +
+                                 '<button id="cal2" onclick="get_km2()">Cal</button>' + '<br>' +
+                              '<div>' + 
+                              '<p id="notify">'  + '해당 요금은 각 차종별 연비와 환경부 충전소 기준의 가격으로 계산되었습니다.' + '</p>' +
+                           '</div>' + 
+               '        </div>' +              
+               '     </div>';
+
+             
+         
+               // addrBtn.onclick = function(){
+               //    var addr = document.querySelector("#addr").value;
+               // };
 
                // 마커 위에 커스텀오버레이를 표시합니다
                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -726,6 +835,208 @@ var $table = $('#table');
          setBounds()
       }
    })
+
+      // Set bounce animation speed
+      var bounceSpeed = 7;
+
+      /* Ball Bouncing On Text © Yogev Ahuvia
+      * ===========================================
+      * This bouncing ball jumps over the words
+      * inside the contentEditable paragraph.
+      * The text itself is editable, the jump speed
+      * is dynamic, and the ball bounce animation 
+      * duration is set by the length of each word.
+      *
+      * Have you tried switching off the light? :)
+      * -------------------------------------------
+      * Works best on Google Chrome.
+      */
+
+      var Bouncer = function(elem) {
+      // init bouncable element and helpers
+      this.$elem = $(elem);
+      this.$ball = $('<div class="ball"></div>');
+      this.$space = $('<span>&nbsp;</span>');
+      this.timers = [];
+      
+      // handle in-place editing events
+      this.$elem.on('blur', (function(instance) {
+         return function() {
+            instance.init();
+            instance.bounce();
+         };
+      })(this));
+      
+      this.$elem.on('keypress', function(e) {
+         var code = (e.keyCode ? e.keyCode : e.which);
+         if (code == 13) {
+            $(this).blur();
+         }
+      });
+      
+      // make it bounce
+      this.init();
+      this.bounce();
+      };
+
+      Bouncer.prototype.init = function() {
+      // get element text for parsing
+      this.elemText = this.$elem.text();
+      
+      // clone element for new text injection
+      this.$cloned = this.$elem.clone()
+                                 .empty()
+                                 .addClass('cloned')
+                                 .removeAttr('contenteditable')
+                                 .appendTo(this.$elem.parent());
+      
+      // handle cloned element termination
+      this.$cloned.on('click', (function(instance) {
+         return function() {
+            instance.reset();
+            instance.$elem.focus();
+            document.execCommand('selectAll', false, null);
+         };
+      })(this));
+      
+      this.$elem.hide(); // hide original element while animating
+      this.$ball.appendTo(this.$cloned); // add ball to new element
+      this.contentArray = this.elemText.split(' ');
+      };
+
+      Bouncer.prototype.bounce = function() {
+      // ball animation incrementing delay
+      var incrementingDelay = 0;
+      
+      // run through the text
+      for (var j = 0; j < this.contentArray.length; j++) {
+         var word = this.contentArray[j];
+         
+         // handle multiple spaces
+         if (/\s/g.test(word)) {
+            this.$space.clone().appendTo(this.$cloned);
+            this.contentArray.splice(j, 1);
+            j--;
+            continue;
+         }
+         
+         // escape each word with a span, add it to cloned element
+         var $word = $('<span class="word">' + word + '</span>');
+         this.$cloned.append($word);
+         var wordLength = $word.width();
+         
+         // add white space elements between words
+         if (j+1 < this.contentArray.length) {
+            this.$space.clone().appendTo(this.$cloned);
+         }
+         
+         // get ball position above word
+         var ballLeft = $word[0].offsetLeft + wordLength/2;
+         var ballTop = $word[0].offsetTop;
+         
+         var ballProps = {left: ballLeft,
+                           top: ballTop,
+                           wordLength: wordLength,
+                           wordIndex: j};
+         
+         // preset timers for the whole text
+         var timer = setTimeout((function(instance, ballProps) {
+            return function() {
+            instance.animateBall(ballProps);
+            };
+         })(this, ballProps), incrementingDelay);
+         this.timers.push(timer);
+         
+         incrementingDelay += wordLength * bounceSpeed;
+      }
+      
+      // hide ball when finished bouncing
+      var timer = setTimeout((function(instance) {
+         return function() {
+            instance.$ball.fadeOut();
+         };
+      })(this), incrementingDelay);
+      this.timers.push(timer);
+      }
+
+      Bouncer.prototype.animateBall = function(ballProps) {
+      
+      // set ball transition duration per word length
+      var leftDuration = ballProps.wordLength * bounceSpeed + 'ms';
+      var topDuration = (ballProps.wordLength * bounceSpeed / 2) + 'ms';
+      this.$ball.css('transition-duration', 
+                     leftDuration + ', ' + topDuration);
+      
+      // animate ball halfway and up
+      var ballOffsetLeft = this.$ball[0].offsetLeft;
+      var delta = ballProps.left - ballOffsetLeft;
+      var ballHalfWay = ballOffsetLeft + delta;
+      this.$ball.css({'left': ballHalfWay + 'px', 
+                        'top': '-50px'});
+      
+      // finish animation when the ball reach halfway
+      var halfwayReached = ballProps.wordLength * bounceSpeed / 2;
+      var timer = setTimeout((function(instance, ballProps) {
+         return function() {
+            
+            // animate ball to finish the bounce
+            instance.$ball.css({'left': ballProps.left + 'px' , 
+                              'top': '0px'});
+            
+            // light the bounced word when the ball bounces on it
+            var bouncedOnWord = ballProps.wordLength * bounceSpeed / 2;
+            var timer = setTimeout((function(instance, ballProps) {
+            return function() {
+               instance.$cloned
+                        .find('.word')
+                        .eq(ballProps.wordIndex)
+                        .addClass('lit');
+            };
+            })(instance, ballProps), bouncedOnWord);
+            instance.timers.push(timer);
+         };
+      })(this, ballProps), halfwayReached);
+      this.timers.push(timer);
+      }
+
+      Bouncer.prototype.reset = function() {
+      for (var i = 0; i < this.timers.length; i++) {
+         clearTimeout(this.timers[i]);
+      }
+      this.timers.length = 0;
+      
+      this.$elem.show();
+      this.$cloned.remove();
+      this.$ball.removeAttr('style');
+      }
+
+      var bouncers = [];
+      $(document).ready(function() {
+      // make all 'bouncer' classes, bounce
+      $('.bouncer').each(function(index, element) {
+         bouncers.push(new Bouncer(element));
+      });;
+      
+      // handle light switch
+      $('.light-switch').on('click', function() {
+         $('body').toggleClass('dark');
+         
+         for (var i = 0; i < bouncers.length; i++) {
+            bouncers[i].reset();
+            bouncers[i].init();
+            bouncers[i].bounce();
+         }
+      });
+      
+      // show hint
+      $('.hint').removeClass('preload');
+      setTimeout(function() {
+         $('.hint').addClass('open');
+         setTimeout(function() {
+            $('.hint').removeClass('open');
+         }, 4000);
+      }, 6000);
+      });
 
 	</script>
 </body>

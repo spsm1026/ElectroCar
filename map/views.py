@@ -65,6 +65,7 @@ def add(request):
 def add2(request):
     input_address1 = request.GET.get('input_address1')
     input_address2 = request.GET.get('input_address2')
+    input_car = request.GET.get('input_car')
 
     driver = wd.Chrome(executable_path='chromedriver.exe')
 
@@ -105,9 +106,29 @@ def add2(request):
     km2 = km2[:-2]
     km2 = float(km2)
 
-    km2 = km2 * 11.32
+    if input_car == "기본연비":
+        cal_re = ( 255.7 / 5.5 ) * km2
+    elif input_car == "코나":
+        cal_re = ( 255.7 / 5.6 ) * km2
+    elif input_car == "레이":
+        cal_re = ( 255.7 / 5.0 ) * km2
+    elif input_car == "쏘울":
+        cal_re = ( 255.7 / 5.4 ) * km2
+    elif input_car == "아이오닉":
+        cal_re = ( 255.7 / 6.3 ) * km2
+    elif input_car == "볼트":
+        cal_re = ( 255.7 / 5.5 ) * km2
+    elif input_car == "SM3Z.E.":
+        cal_re = ( 255.7 / 4.5 ) * km2
+    elif input_car == "i3":
+        cal_re = ( 255.7 / 5.4 ) * km2
+    elif input_car == "스파크":
+        cal_re = ( 255.7 / 6.0 ) * km2
+
+    cal_re = int(cal_re)
+
     
-    return JsonResponse({'km2' : km2}, safe=False)
+    return JsonResponse({'cal_re' : cal_re }, safe=False)
 
 def map(request):
     # sido_list = Sido.objects.order_by('sido_name')
