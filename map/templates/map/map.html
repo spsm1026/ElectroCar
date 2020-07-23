@@ -733,7 +733,7 @@ var $table = $('#table');
          overlay_list = new Array();      
 
          $('#map').empty();
-
+         console.log('res', res)
          var container = document.getElementById('map');
          var options = {
             center: new kakao.maps.LatLng(res[0].lat, res[0].lng),
@@ -797,7 +797,7 @@ var $table = $('#table');
                '        </div>' + 
                '        <div class="body">' + 
                '            <div class="desc">' + 
-               '                <div class="ellipsis">' + res[i].address + '</div>' + 
+               '                <div class="ellipsis" style="width:70%">' + res[i].address + '</div>' +  
                '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
                '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
                '<table class="rwd-table">' +
