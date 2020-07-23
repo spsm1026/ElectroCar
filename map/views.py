@@ -8,7 +8,103 @@ from .models import Sido, Goo
 import smtplib
 from email.mime.text import MIMEText
 
+from selenium import webdriver as wd
 import requests
+import time
+from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
+import pyautogui
+from bs4 import BeautifulSoup
+from datetime import datetime
+
+
+def add(request):
+    input_address = request.GET.get('input_address')
+    marker_address = request.GET.get('marker_address')
+
+    driver = wd.Chrome(executable_path='chromedriver.exe')
+
+    # driver.close() #메모리 정리
+
+    start = input_address 
+    finish = marker_address
+    data = []
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('lang=ko_KR')
+
+
+    driver = webdriver.Chrome('chromedriver.exe')
+
+    driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
+    delay = 3
+    driver.implicitly_wait(delay)
+    # driver.find_element_by_xpath('//*[@id="intro_popup_close"]/span').click()
+    # driver.implicitly_wait(5)
+    driver.find_element_by_xpath('//*[@id="container"]/div[1]/shrinkable-layout/directions-layout/directions-result/div[1]/ul/li[2]/a').click()
+    driver.implicitly_wait(5)
+    el = driver.find_element_by_id('directionStart0')
+    el.send_keys(start)
+    time.sleep(0.02)
+    el.send_keys(Keys.ENTER)
+    time.sleep(0.2)
+    al = driver.find_element_by_id('directionGoal1')
+    al.send_keys(finish)
+    time.sleep(0.02)
+    al.send_keys(Keys.ENTER)
+    time.sleep(0.2)
+    driver.find_element_by_xpath('//*[@id="container"]/div[1]/shrinkable-layout/directions-layout/directions-result/div[1]/directions-search/div[2]/button[3]').click()
+    time.sleep(0.3)
+
+    km = driver.find_element_by_css_selector('div.inner_scroll span.summary_text').text
+    
+    return JsonResponse({'km' : km}, safe=False)
+
+def add2(request):
+    input_address1 = request.GET.get('input_address1')
+    input_address2 = request.GET.get('input_address2')
+
+    driver = wd.Chrome(executable_path='chromedriver.exe')
+
+    # driver.close() #메모리 정리
+
+    start = input_address1
+    finish = input_address2
+    data = []
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('lang=ko_KR')
+
+
+    driver = webdriver.Chrome('chromedriver.exe')
+
+    driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
+    delay = 3
+    driver.implicitly_wait(delay)
+    # driver.find_element_by_xpath('//*[@id="intro_popup_close"]/span').click()
+    # driver.implicitly_wait(5)
+    driver.find_element_by_xpath('//*[@id="container"]/div[1]/shrinkable-layout/directions-layout/directions-result/div[1]/ul/li[2]/a').click()
+    driver.implicitly_wait(5)
+    el = driver.find_element_by_id('directionStart0')
+    el.send_keys(start)
+    time.sleep(0.02)
+    el.send_keys(Keys.ENTER)
+    time.sleep(0.2)
+    al = driver.find_element_by_id('directionGoal1')
+    al.send_keys(finish)
+    time.sleep(0.02)
+    al.send_keys(Keys.ENTER)
+    time.sleep(0.2)
+    driver.find_element_by_xpath('//*[@id="container"]/div[1]/shrinkable-layout/directions-layout/directions-result/div[1]/directions-search/div[2]/button[3]').click()
+    time.sleep(0.3)
+
+    km2 = driver.find_element_by_css_selector('div.inner_scroll span.summary_text').text
+    
+    return JsonResponse({'km2' : km2}, safe=False)
 
 def map(request):
     # param = {'query' : '경기 용인시 기흥구 보정로 87'}
@@ -95,3 +191,5 @@ def sendMail(from_email, to_email, msg):
 def sendMail_2(request):
     sendMail("22@gmail.com","22@gmail.com","완료 되었습니다.")
     return render(request, 'map/index.html','')
+def test(request):
+    return render(request,'map/test.html')
