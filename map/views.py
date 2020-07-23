@@ -65,6 +65,7 @@ def add(request):
 def add2(request):
     input_address1 = request.GET.get('input_address1')
     input_address2 = request.GET.get('input_address2')
+    input_car = request.GET.get('input_car')
 
     driver = wd.Chrome(executable_path='chromedriver.exe')
 
@@ -78,7 +79,6 @@ def add2(request):
     chrome_options.add_argument('headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('lang=ko_KR')
-
 
     driver = webdriver.Chrome('chromedriver.exe')
 
@@ -106,9 +106,29 @@ def add2(request):
     km2 = km2[:-2]
     km2 = float(km2)
 
-    km2 = km2 * 11.32
+    if input_car == "기본연비":
+        cal_re = ( 255.7 / 5.5 ) * km2
+    elif input_car == "코나":
+        cal_re = ( 255.7 / 5.6 ) * km2
+    elif input_car == "레이":
+        cal_re = ( 255.7 / 5.0 ) * km2
+    elif input_car == "쏘울":
+        cal_re = ( 255.7 / 5.4 ) * km2
+    elif input_car == "아이오닉":
+        cal_re = ( 255.7 / 6.3 ) * km2
+    elif input_car == "볼트":
+        cal_re = ( 255.7 / 5.5 ) * km2
+    elif input_car == "SM3Z.E.":
+        cal_re = ( 255.7 / 4.5 ) * km2
+    elif input_car == "i3":
+        cal_re = ( 255.7 / 5.4 ) * km2
+    elif input_car == "스파크":
+        cal_re = ( 255.7 / 6.0 ) * km2
+
+    cal_re = int(cal_re)
+
     
-    return JsonResponse({'km2' : km2}, safe=False)
+    return JsonResponse({'cal_re' : cal_re }, safe=False)
 
 def map(request):
     # sido_list = Sido.objects.order_by('sido_name')
@@ -118,7 +138,7 @@ def map(request):
     return render(request, 'map/map.html')
 
 def map_data(request):
-    url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=s7Ytkl8dJDy32JsmhtlyMEGVjWPfEcBuXNnDCYQHitUBkHblPkhsXakF6aMhFf6NFOcxj6RFnuim5wTJUPNrkQ%3D%3D'
+    url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=%2FuulHEenTm5AaXHhdM5TCK3IG6AkNr5%2BQeE1QH1tBNBPYe%2FDSWYlpahKtXBwo7U4xn1T8pNhgH3t7zwTGljWqQ%3D%3D'
     res = requests.get(url)
     res.encoding = None
     soup = BeautifulSoup(res.text, 'html.parser')
@@ -142,15 +162,7 @@ def map_data(request):
             chargespot["lat"] = str(tag.select_one('lat').text)
             chargespot["lng"] = str(tag.select_one('lng').text)
             chargespot["chger_id"] = str(tag.select_one('chgerId').text)
-            #충전기 타입 입력
-            # if str(tag.select_one("chgerType").text) in ['01', '04', '05']:
-            #     chargespot["chgertype"] = "DC"
-            # elif str(tag.select_one("chgerType").text) in ['02', '07'] :
-            #     chargespot["chgertype"] = "AC"
-            # elif str(tag.select_one("chgerType").text) in ['03', '06'] :
-            #     chargespot["chgertype"] = "DC + AC"
             chargespot["chagertype"] = str(tag.select_one('chgerType').text)
-            
             chargespot["use_time"] = str(tag.select_one('useTime').text)
             chargespot["busi_nm"] = str(tag.select_one('busiNm').text)
             chargespot["busi_call"] = str(tag.select_one('busiCall').text)
