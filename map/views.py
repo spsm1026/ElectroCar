@@ -141,6 +141,7 @@ def map_data(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=%2FuulHEenTm5AaXHhdM5TCK3IG6AkNr5%2BQeE1QH1tBNBPYe%2FDSWYlpahKtXBwo7U4xn1T8pNhgH3t7zwTGljWqQ%3D%3D'
     res = requests.get(url)
     res.encoding = None
+    print(res.text)
     soup = BeautifulSoup(res.text, 'html.parser')
     all = soup.select('item')
     chargespot_list = []
@@ -181,7 +182,6 @@ def map_data(request):
 
 def index(request):
     return render(request,'map/index.html')
-
 
 def sendMail(from_email, to_email, msg):
     smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
