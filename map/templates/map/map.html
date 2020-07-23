@@ -286,20 +286,37 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+            {% if request.session.useremail %}
             <li class="nav-item active">
-              <a class="nav-link" href="http://localhost:8000/electrocar/index">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="http://localhost:8000/electrocar_c/login">Log in</a>
-            </li>
+               <a class="nav-link" href="http://localhost:8000/electrocar/index">Home
+                 <span class="sr-only">(current)</span>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="#">Bookmark</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="#" id="logout2">Logout</a>
+             </li>
+             <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                        <script>
+                        $("#logout2").on("click",function() {
+                            location.href = "/electrocar_c/logout";
+                        })
+                        </script>
+            {% else %}
+            <li class="nav-item active">
+               <a class="nav-link" href="http://localhost:8000/electrocar/index">Home
+                 <span class="sr-only">(current)</span>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="http://localhost:8000/electrocar_c/register">Login</a>
+             </li>
+            {% endif %}  
             <!-- <li class="nav-item">
               <a class="nav-link" href="#">Services</a>
             </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
           </ul>
         </div>
       </div>
@@ -733,7 +750,7 @@ var $table = $('#table');
             (function(idx) {
                kakao.maps.event.addListener(marker_list[idx], 'click',function(){
                   var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.065, res[idx].lng);
-                  console.log(res[idx].lat, res[idx].lat-1)
+                  console.log(res[idx].lat, res[idx].lat-1) 
                   map.panTo(moveLatLon)
                });
             })(i)

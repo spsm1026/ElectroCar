@@ -1,4 +1,4 @@
 <script>
     alert('로그인 되었습니다.');
-    location = '/electrocar_c/home';
+    location = '{{ request.session.redirect_uri }}';
 </script>
