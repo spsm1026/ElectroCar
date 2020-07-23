@@ -80,7 +80,6 @@ def add2(request):
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('lang=ko_KR')
 
-
     driver = webdriver.Chrome('chromedriver.exe')
 
     driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
@@ -161,15 +160,7 @@ def map_data(request):
             chargespot["lat"] = str(tag.select_one('lat').text)
             chargespot["lng"] = str(tag.select_one('lng').text)
             chargespot["chger_id"] = str(tag.select_one('chgerId').text)
-            #충전기 타입 입력
-            # if str(tag.select_one("chgerType").text) in ['01', '04', '05']:
-            #     chargespot["chgertype"] = "DC"
-            # elif str(tag.select_one("chgerType").text) in ['02', '07'] :
-            #     chargespot["chgertype"] = "AC"
-            # elif str(tag.select_one("chgerType").text) in ['03', '06'] :
-            #     chargespot["chgertype"] = "DC + AC"
             chargespot["chagertype"] = str(tag.select_one('chgerType').text)
-            
             chargespot["use_time"] = str(tag.select_one('useTime').text)
             chargespot["busi_nm"] = str(tag.select_one('busiNm').text)
             chargespot["busi_call"] = str(tag.select_one('busiCall').text)
