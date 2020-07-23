@@ -174,6 +174,7 @@ var $table = $('#table');
       overlay = overlay_list[i];
       overlay.setMap(null);
    }
+
    function get_km(obj) {
       marker_address = $(obj).parents('.desc').find('.ellipsis').not('.jibun').text()
       // console.log(marker_address)
@@ -188,6 +189,20 @@ var $table = $('#table');
             $('[id=result]:last').text(km)
             console.log(input_address)
             console.log(marker_address)
+         }
+      });
+   }
+
+   function get_km2() {
+      $.ajax({
+         url: '/electrocar/add2/',
+         data: { 
+            'input_address1': $('#address1').val(),
+            'input_address2': $('#address2').val(),
+         },
+         success: function(res2) {
+            var km2 = res2.km2
+            $('#result2').text(km2)
          }
       });
    }
@@ -302,7 +317,11 @@ var $table = $('#table');
                   '<div id="km">' +
                   '<input id="address" type="text">' + 
                   '<button id="cal" onclick="get_km(this)">Cal</button>' +
-                  '<p id="result">' + '</p>' +
+                  '<p id="result">' + '</p>' + '<br>' +
+                  '<input id="address1" type="text">' + 
+                  '<input id="address2" type="text">' + 
+                  '<button id="cal2" onclick="get_km2()">Cal2</button>' +
+                  '<p id="result2">' + '</p>' +
                   '</div>' + 
                '            </div>' + 
                '        </div>' + 
