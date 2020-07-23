@@ -306,7 +306,8 @@
   <!-- Page Content -->
    <div class="container">
       <div class="row" style="display : block;">
-         <span style="font-size:20px; font-weight: bolder; float:left; padding-left: 5px; height:50px;">지역 선택</span>
+         
+         <span style="font-size:20px; font-weight: bolder; float:left; padding-left: 5px; height:50px;">    지역 선택</span>
          <br>
          <br>
          <select name="sido1" id="sido1" style="width:120px; height:50px;"></select>
@@ -601,7 +602,7 @@ var $table = $('#table');
          overlay_list = new Array();      
 
          $('#map').empty();
-
+         console.log('res', res)
          var container = document.getElementById('map');
          var options = {
             center: new kakao.maps.LatLng(res[0].lat, res[0].lng),
@@ -665,7 +666,7 @@ var $table = $('#table');
                '        </div>' + 
                '        <div class="body">' + 
                '            <div class="desc">' + 
-               '                <div class="ellipsis">' + res[i].address + '</div>' + 
+               '                <div class="ellipsis" style="width:70%">' + res[i].address + '</div>' +  
                '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
                '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
                '<table class="rwd-table">' +
