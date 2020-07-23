@@ -8,7 +8,7 @@
 		.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
 		.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
 		.info .close:hover {cursor: pointer;}
-		.info .body {width: 500px; height: 280px;overflow: auto;}
+		.info .body {width: 500px; height: 280px;overflow: scroll;}
 		.info .desc {position: relative; margin: 5px 5px 5px 5px; height: 143px;}
 		.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 		.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
@@ -203,8 +203,10 @@
    <div id="map" style="width:700px;height:500px; margin:auto;">
    </div> -->
 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=17fe855487f012ea81d5145b3040fb88"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805&libraries=services"></script>
 <script>
 
    //exporte les données sélectionnées
@@ -232,6 +234,38 @@ var $table = $('#table');
       overlay.setMap(null);
    }
 
+   function get_km(obj) {
+      marker_address = $(obj).parents('.desc').find('.ellipsis').not('.jibun').text()
+      // console.log(marker_address)
+      $.ajax({
+         url: '/electrocar/add/',
+         data: { 
+            'input_address': $('#address').val(),
+            'marker_address': marker_address 
+         },
+         success: function(res) {
+            var km = res.km
+            $('[id=result]:last').text(km)
+            console.log(input_address)
+            console.log(marker_address)
+         }
+      });
+   }
+
+   function get_km2() {
+      $.ajax({
+         url: '/electrocar/add2/',
+         data: { 
+            'input_address1': $('#address1').val(),
+            'input_address2': $('#address2').val(),
+         },
+         success: function(res2) {
+            var km2 = res2.km2
+            $('#result2').text(km2)
+         }
+      });
+   }
+
    $('#search-btn').click(function() {
       var sido = $('#select_sido').val();
       var goo = $('#select_goo').val();
@@ -247,8 +281,8 @@ var $table = $('#table');
             overlay_list = new Array();      
             $('#map').empty();
 
-            var container = document.getElementById('map');
-            var options = {
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
                center: new kakao.maps.LatLng(res[0].lat, res[0].lng),
                level: 3
             };
@@ -269,6 +303,12 @@ var $table = $('#table');
                //latlngbounds 객체에 좌표 추가
                bounds.extend(latlng)
                var link = res[i].lat + "," + res[i].lng
+
+               
+
+      
+
+
 
                if (res[i].chgertype == 01){
                   var chgertype = "DC 차데모"
@@ -298,42 +338,13 @@ var $table = $('#table');
                      var chgerType = "AC 3상"
                      var carType = "SM3 ZE"
                   }
+
+
+          
+
+                  
+
                
-               //충전기 정보 테이블 row 생성
-               var charge_content = '';
-               for(var j = 0; j < res.length; j++) {
-                  if (res[i].statNm == res[j].statNm) {
-                     charge_content += 
-                     '<tr>' +
-                     '<td data-th="Movie Title">' +  +'</td>' +
-                     '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-                     '<td data-th="Genre">'+ chgerType +'</td>' +
-                     '<td data-th="Gross">'+ carType +'</td>' +
-                     '<td data-th="Year">'+ res[i].stat +'</td>' +
-                     '</tr>'
-                  }
-               }
-               // for(var j=0; j < table_list.length; j++) {
-               //    var table = 
-               //       '<table class="rwd-table">' +
-               //       '<tr>' +
-               //          '<th>Index</th>' +
-               //          '<th>Power Type</th>' +
-               //          '<th>Charger Type</th>' +
-               //          '<th>Car Type</th>' +
-               //          '<th>Status</th>' +
-
-               //       '</tr>' +
-               //       '<tr>' +
-               //          '<td data-th="Movie Title">' + j +'</td>' +
-               //          '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
-               //          '<td data-th="Genre">'+ chgerType +'</td>' +
-               //          '<td data-th="Gross">'+ carType +'</td>' +
-               //          '<td data-th="Year">'+ res[i].stat +'</td>' +
-               //       '</tr>' +
-               //       '</table>' 
-               // }
-
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
                '        <div class="title">' + 
@@ -357,13 +368,33 @@ var $table = $('#table');
                      '<th>Status</th>' +
 
                   '</tr>' +
-                  charge_content +
-                  '</table>'+
-
+                  '<tr>' +
+                     '<td data-th="Movie Title">' +  +'</td>' +
+                     '<td data-th="Movie Title">' + res[i].power_type +'</td>' +
+                     '<td data-th="Genre">'+ chgerType +'</td>' +
+                     '<td data-th="Gross">'+ carType +'</td>' +
+                     '<td data-th="Year">'+ res[i].stat +'</td>' +
+                  '</tr>' +
+                  '</table>' +
+                  '<div id="km">' +
+                  '<input id="address" type="text">' + 
+                  '<button id="cal" onclick="get_km(this)">Cal</button>' +
+                  '<p id="result">' + '</p>' + '<br>' +
+                  '<input id="address1" type="text">' + 
+                  '<input id="address2" type="text">' + 
+                  '<button id="cal2" onclick="get_km2()">Cal2</button>' +
+                  '<p id="result2">' + '</p>' +
+                  '</div>' + 
                '            </div>' + 
                '        </div>'  
                // '    </div>' +                
                // '</div>';
+
+             
+         
+               // addrBtn.onclick = function(){
+               //    var addr = document.querySelector("#addr").value;
+               // };
 
                // 마커 위에 커스텀오버레이를 표시합니다
                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -380,6 +411,8 @@ var $table = $('#table');
                   kakao.maps.event.addListener(marker_list[idx], 'click', function() {
                      console.log(idx)
                      overlay_list[idx].setMap(map);
+
+                    
                   });
                })(i);
                
@@ -394,7 +427,10 @@ var $table = $('#table');
             setBounds()
          }
       })
-   })
+
+   });
+
+
 
    $.ajax({
       url: '/electrocar/mapdata/',
