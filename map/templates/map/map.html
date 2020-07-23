@@ -270,8 +270,6 @@
                });
             }
          });
-         
-         
          });
          </script>
 
@@ -298,7 +296,7 @@
               <a class="nav-link" href="#">Services</a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
+              <a class="nav-link" href="#">Bookmark</a>
             </li>
           </ul>
         </div>
@@ -458,12 +456,6 @@ var $table = $('#table');
                bounds.extend(latlng)
                var link = res[i].lat + "," + res[i].lng
 
-               
-
-      
-
-
-
                if (res[i].chgertype == 01){
                   var chgertype = "DC 차데모"
                   var carType = "블루온, 레이, 쏘울, 아이오닉"
@@ -508,8 +500,6 @@ var $table = $('#table');
                      '</tr>'
                   }
                }
-                  
-
                
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
@@ -518,9 +508,6 @@ var $table = $('#table');
                '            <div class="close" onclick="closeOverlay(' + i + ')" title="닫기"></div>' + 
                '        </div>' + 
                '        <div class="body">' + 
-               // '            <div class="img">' +
-               // '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
-               // '           </div>' + 
                '            <div class="desc">' + 
                '                <div class="ellipsis">' + res[i].address + '</div>' + 
                '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
@@ -549,14 +536,6 @@ var $table = $('#table');
                   '</div>' + 
                '            </div>' + 
                '        </div>'  
-               // '    </div>' +                
-               // '</div>';
-
-             
-         
-               // addrBtn.onclick = function(){
-               //    var addr = document.querySelector("#addr").value;
-               // };
 
                // 마커 위에 커스텀오버레이를 표시합니다
                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -594,11 +573,13 @@ var $table = $('#table');
                // bounds.extend(marker_list[i].getPosition())
             }
 
+
+
             for(var i = 0; i < res.length; i++) {
                (function(idx) {
                   kakao.maps.event.addListener(marker_list[idx], 'click', function(){
+                     map.setLevel(6)
                      var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.01, res[idx].lng);
-                     // setBounds()
                      map.panTo(moveLatLon)
                      })
                   })(i);
@@ -612,8 +593,6 @@ var $table = $('#table');
       })
 
    });
-
-
 
    $.ajax({
       url: '/electrocar/mapdata/',
@@ -732,6 +711,7 @@ var $table = $('#table');
             
             (function(idx) {
                kakao.maps.event.addListener(marker_list[idx], 'click',function(){
+                  map.setLevel(6)
                   var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.065, res[idx].lng);
                   console.log(res[idx].lat, res[idx].lat-1)
                   map.panTo(moveLatLon)
