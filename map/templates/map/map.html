@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<style>
 		.wrap {position: absolute;left: 0;bottom: 40px;width: 500px;height: 310px;margin-left: -260px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
 		.wrap * {padding: 0;margin: 0;}
@@ -127,23 +126,23 @@
    <!-- Navigation -->
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="#">주소로 검색</a>
+        <a class="navbar-brand" href="http://localhost:8000/electrocar/map" style="font-size : 24px;">주소로 검색</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home
+              <a class="nav-link" href="http://localhost:8000/electrocar/index">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="http://localhost:8000/electrocar_c/login">Log in</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="#">Services</a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="#">Contact</a>
             </li>
@@ -246,8 +245,6 @@ var $table = $('#table');
          success: function(res) {
             marker_list = new Array();
             overlay_list = new Array();      
-            console.log(sido)
-            console.log(goo)
             $('#map').empty();
 
             var container = document.getElementById('map');
