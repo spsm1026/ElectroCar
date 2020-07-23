@@ -115,6 +115,12 @@ a{
     text-align:left;
     
 }
+@media (max-width:950px) {
+    .register-info-box {
+        display: none;
+    }
+}
+
 .right-log{right:50px !important;}
 
 .login-show, 
@@ -238,7 +244,7 @@ a{
             <h2>REGISTER</h2>
             <form method="post" action="/electrocar_c/register/">
                 {% csrf_token %}
-                <input type="text" name ='useremail' placeholder="Email">
+                <input type="text" name ='useremail'id='useremail' placeholder="Email">
                 <input type="password"  name = 'password1' placeholder="Password">
                 <input type="password" name = 'password2' placeholder="Confirm Password">
                 <select name="cars" id="cars">

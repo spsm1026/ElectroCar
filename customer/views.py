@@ -23,15 +23,18 @@ def find(request):
 def register(request):
     car_charge_list = Carcharger.objects.order_by('id')
     if request.method == 'POST':
+
         # 입력값이 같다면 DB에 저장
-        if request.POST['password1'] == request.POST['password2']:
+        if (request.POST['useremail'] == "") or (request.POST['password1'] == "") or (request.POST['password2'] == "") or (request.POST['cars'] == ""):
+            return render(request, 'customer/register_fail2.html')            
+        elif request.POST['password1'] == request.POST['password2']:
             user = User(
                 useremail = request.POST['useremail'], password = request.POST['password1'], cars = request.POST['cars'])
             user.save()
             return render(request, 'customer/register_success.html')
             # return HttpResponseRedirect('/electrocar/create')
         else:
-            return render(request, 'customer/register_fail.html')
+            return render(request, 'customer/register_fail1.html')
         # DB에 데이터 저장후 로그인 화면으로 이동
         return render(request, 'customer/customer.html')
     # 로그인/회원가입 화면 보여주기
