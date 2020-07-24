@@ -352,9 +352,8 @@
                });
             }
          });
-         });
+      });
          </script>
-
    </head>
 <body>
    <!-- Navigation -->
@@ -417,19 +416,6 @@
          <select name="sido1" id="sido1" style="width:120px; height:35px;"></select>
          &nbsp;&nbsp;&nbsp;&nbsp;
          <select name="gugun1" id="gugun1" style="width:120px; height:35px;"></select>
-         <!-- <select id="select_sido" style="width:120px; height:50px;" title="시도 선택" class="search_sido">
-            <option value>시도 선택</option>
-            {% for sido in sido_list %}
-               <option value={{sido}}>{{sido.sido_name}}</option>
-            {% endfor %}
-         </select>
-         &nbsp;&nbsp;&nbsp;&nbsp;
-         <select id="select_goo" style="width:120px; height:50px;" title="구 선택" class="select_goo">
-            <option value>구 선택</option>
-            {% for goo in goo_list %}
-               <option value={{goo}}>{{goo.goo_name}}</option>
-            {% endfor %}
-         </select> -->
          &nbsp;&nbsp;&nbsp;&nbsp;
          <button id='search-btn' type='button'>Search</button>
             <br>
@@ -438,40 +424,24 @@
          <div id="map" style="width:950px;height:530px; margin:auto;"></div>
       </div>
    </div>
-<!-- 
-   <div id="address_search" style = "width:300px; height:100%"></div>
-      <span style="font-weight: bolder; float:left; padding-left: 5px;">지역 선택</span>
-      <br>
 
-      <select id="select_sido" style="width:120px;" title="시도 선택" class="search_sido">
-         <option value>시도 선택</option>
-         {% for sido in sido_list %}
-            <option value={{sido}}>{{sido.sido_name}}</option>
-         {% endfor %}
-      </select>
-      <select id="select_goo" style="width:120px;" title="구 선택" class="select_goo">
-         <option value>구 선택</option>
-         {% for goo in goo_list %}
-            <option value={{goo}}>{{goo.goo_name}}</option>
-         {% endfor %}
-      </select>
-      <button id='search-btn' type='button'>Search</button>
-   <br>
-   <br>
-   <br>
-   <div id="map" style="width:700px;height:500px; margin:auto;">
-   </div> -->
+   <div id = "car_list" style='display:none;' >
+      <table>
+         
+      </table>
+   </div>
 
    <div id = "carcharger_list"  style='display:none;'>
       <select class = "inputcar">
          <option value="기본연비">기본값(5.5km/kWh)</option>
    
       {% for car in carcharger_list %}
+       
          <option value="{{car.car_name}}" 
-            {% if request.session.carcharger_list == car.car_name %}
-               selected
+            {% if request.session.cars == car.car_name %}
+                  selected
             {% endif %}
-         >        
+         >      
          {{car.car_name}}</option>
       {% endfor %}
    
@@ -585,27 +555,27 @@ var $table = $('#table');
                   }  
                   else if (res[i].chagertype == 02) {
                      var chgerType = "AC 완속"
-                     var carType = "몰라"
+                     var carType = "집에서 충전하세요 ~~ ^^"
                   }
                   else if (res[i].chagertype == 03) {
                      var chgerType = "DC 차데모" + "<br>" + "AC 3상"
-                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "SM3 ZE"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "SM3Z.E., 테슬라 모델"
                   }
                   else if (res[i].chagertype == 04) {
                      var chgerType = "DC 콤보"
-                     var carType = "코나, 스파크, 볼트, i3, 아이오닉"
+                     var carType = "코나, 스파크, 볼트, i3, 아이오닉, 니로"
                   }
                   else if (res[i].chagertype == 05) {
                      var chgerType = "DC 차데모" + "<br>" + "DC 콤보"
-                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉, 니로"
                   }
                   else if (res[i].chagertype == 06) {
                      var chgerType = "DC 차데모" + "<br>" + "AC 3상" + "<br>" + "DC 콤보"
-                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" +  "SM3 ZE" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" +  "SM3Z.E., 테슬라 모델" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉, 니로"
                   }
                   else if (res[i].chagertype == 07) {
                      var chgerType = "AC 3상"
-                     var carType = "SM3 ZE"
+                     var carType = "SM3Z.E., 테슬라 모델"
                   }
 
                var content_table = ''
@@ -623,20 +593,6 @@ var $table = $('#table');
                      '</tr>'
                   }
                }
-
-
-               
-                  // var select_car = ''
-                  // var select_options = ''
-                  // for (var i=0; i< carcharger_list.legnth; i++){
-                  //    select_options += '<option value="{{carcharger_list.i.car_name}}">' + {{ carcharger_list.i.car_name }} + '</option>'
-                  // }
-                  // select_car = '<select class = "inputcar">' + select_options + '</select>' + '<br>' ;
-                 
-               //    if (request.session.user_car) { 
-               // }
-
-
 
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 

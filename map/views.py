@@ -17,6 +17,8 @@ import pyautogui
 from bs4 import BeautifulSoup
 from datetime import datetime
 
+import re
+
 
 def add(request):
     input_address = request.GET.get('input_address')
@@ -78,6 +80,9 @@ def add2(request):
     finish = input_address2
     data = []
 
+    
+
+
 
    
 
@@ -108,22 +113,28 @@ def add2(request):
 
     if input_car == "기본연비":
         cal_re = ( 255.7 / 5.5 ) * km2
-    elif input_car == "코나":
+    elif input_car == "현대 코나":
         cal_re = ( 255.7 / 5.6 ) * km2
-    elif input_car == "레이":
+    elif input_car == "기아 레이":
         cal_re = ( 255.7 / 5.0 ) * km2
-    elif input_car == "쏘울":
+    elif input_car == "기아 쏘울":
         cal_re = ( 255.7 / 5.4 ) * km2
-    elif input_car == "아이오닉":
+    elif input_car == "현대 아이오닉":
         cal_re = ( 255.7 / 6.3 ) * km2
-    elif input_car == "볼트":
+    elif input_car == "쉐보레 볼트":
         cal_re = ( 255.7 / 5.5 ) * km2
-    elif input_car == "SM3Z.E.":
+    elif input_car == "기아 니로":
+        cal_re = ( 255.7 / 5.3 ) * km2
+    elif input_car == "르노삼성 SM3Z.E.":
         cal_re = ( 255.7 / 4.5 ) * km2
-    elif input_car == "i3":
+    elif input_car == "BMW i3":
         cal_re = ( 255.7 / 5.4 ) * km2
-    elif input_car == "스파크":
+    elif input_car == "쉐보레 스파크":
         cal_re = ( 255.7 / 6.0 ) * km2
+    elif input_car == "테슬라 모델X":
+        cal_re = ( 255.7 / 3.4 ) * km2
+    elif input_car == "테슬라 모델SP":
+        cal_re = ( 255.7 / 3.8 ) * km2
 
     cal_re = int(cal_re)
 
