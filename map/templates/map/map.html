@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html>
 	<style>
+      #bookmark-btn {
+      font-family: "Montserrat", sans-serif;
+      cursor: pointer;
+      width: 300px;
+      height: 40px;
+      font-size: 1rem;
+      background-color: var(--alt-color);
+      color: #fff;
+      outline: none;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+         left: 20px;
+         top: 1px;
+         bottom: 10px;
+      }
+
 		.wrap {position: absolute;left: 0;bottom: 40px;width: 500px;height: 300px;margin-left: -260px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
 		.wrap * {padding: 0;margin: 0;}
 		.wrap .info {width: 500px; height: 288px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
@@ -290,14 +308,11 @@
          width: 17px;
          height: 17px;
       }
-
-
-
    </style>
    
    <head>
       <meta charset="utf-8"/>
-      <title>주소로 검색</title>
+      <title>Electric Vehicles, Everyone's Network</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="">
@@ -352,9 +367,8 @@
                });
             }
          });
-         });
+      });
          </script>
-
    </head>
 <body>
    <!-- Navigation -->
@@ -400,9 +414,6 @@
             <!-- <li class="nav-item">
               <a class="nav-link" href="#">Services</a>
             </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="#">Bookmark</a>
-            </li>
           </ul>
        
       </div>
@@ -417,55 +428,55 @@
          <select name="sido1" id="sido1" style="width:120px; height:35px;"></select>
          &nbsp;&nbsp;&nbsp;&nbsp;
          <select name="gugun1" id="gugun1" style="width:120px; height:35px;"></select>
-         <!-- <select id="select_sido" style="width:120px; height:50px;" title="시도 선택" class="search_sido">
-            <option value>시도 선택</option>
-            {% for sido in sido_list %}
-               <option value={{sido}}>{{sido.sido_name}}</option>
-            {% endfor %}
-         </select>
-         &nbsp;&nbsp;&nbsp;&nbsp;
-         <select id="select_goo" style="width:120px; height:50px;" title="구 선택" class="select_goo">
-            <option value>구 선택</option>
-            {% for goo in goo_list %}
-               <option value={{goo}}>{{goo.goo_name}}</option>
-            {% endfor %}
-         </select> -->
          &nbsp;&nbsp;&nbsp;&nbsp;
          <button id='search-btn' type='button'>Search</button>
             <br>
             <br>
          </div>
          <div id="map" style="width:950px;height:530px; margin:auto;"></div>
+         <div style="width:300px; height:500px;">
+            <br>
+            <p style="font-size:20px;">자주 가는 충전소</p>
+            <ul>
+               {% for bookmark in bookmark_list %}
+                  {% if bookmark.user_id_id == request.session.userid %}
+                     <button class='bookmark-btn' id='bookmark-btn' value="{{bookmark.bookmark_station}}">{{bookmark.bookmark_station}}</button><br><br>
+                  {% endif %}
+               {% endfor %}
+            </ul>
+         </div>
       </div>
    </div>
-<!-- 
-   <div id="address_search" style = "width:300px; height:100%"></div>
-      <span style="font-weight: bolder; float:left; padding-left: 5px;">지역 선택</span>
-      <br>
 
-      <select id="select_sido" style="width:120px;" title="시도 선택" class="search_sido">
-         <option value>시도 선택</option>
-         {% for sido in sido_list %}
-            <option value={{sido}}>{{sido.sido_name}}</option>
-         {% endfor %}
+   <div id = "car_list" style='display:none;' >
+      <table>
+         
+      </table>
+   </div>
+
+   <div id = "carcharger_list"  style='display:none;'>
+      <select class = "inputcar">
+         <option value="기본연비">기본값(5.5km/kWh)</option>
+   
+      {% for car in carcharger_list %}
+       
+         <option value="{{car.car_name}}" 
+            {% if request.session.cars == car.car_name %}
+                  selected
+            {% endif %}
+         >      
+         {{car.car_name}}</option>
+      {% endfor %}
+   
       </select>
-      <select id="select_goo" style="width:120px;" title="구 선택" class="select_goo">
-         <option value>구 선택</option>
-         {% for goo in goo_list %}
-            <option value={{goo}}>{{goo.goo_name}}</option>
-         {% endfor %}
-      </select>
-      <button id='search-btn' type='button'>Search</button>
-   <br>
-   <br>
-   <br>
-   <div id="map" style="width:700px;height:500px; margin:auto;">
-   </div> -->
+
+   </div>
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805&libraries=services"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
    //exporte les données sélectionnées
@@ -496,6 +507,7 @@ var $table = $('#table');
    function get_km(obj) {
       marker_address = $(obj).parents('.desc').find('.ellipsis').not('.jibun').text()
       // console.log(marker_address)
+      $('#result1').text("로딩 중..."); 
       $.ajax({
          url: '/electrocar/add/',
          data: { 
@@ -509,7 +521,10 @@ var $table = $('#table');
       });
    }
 
+
+
    function get_km2() {
+      $('#result2').text("로딩 중..."); 
       $.ajax({
          url: '/electrocar/add2/',
          data: { 
@@ -520,14 +535,109 @@ var $table = $('#table');
          success: function(res2) {
             var cal_re = res2.cal_re
             $('#result2').text('약 ' + cal_re + '원입니다.')
+            }
+         });
+      }
+ 
+               function execDaumPostcode() { 
+                  new daum.Postcode({ 
+                     oncomplete: function(data) { 
+                  // 각 주소의 노출 규칙에 따라 주소를 조합한다. 
+                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다. 
+                  var fullAddr = data.address; 
+                  // 최종 주소 변수 
+                  var extraAddr = ''; 
+                  // 조합형 주소 변수 // 기본 주소가 도로명 타입일때 조합한다. 
+                  if(data.addressType === 'R'){ 
+                     //법정동명이 있을 경우 추가한다. 
+                     if(data.bname !== ''){ extraAddr += data.bname; } 
+                     // 건물명이 있을 경우 추가한다. 
+                     if(data.buildingName !== ''){ extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName); } 
+                     // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다. 
+                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : ''); } 
+                     // 주소 정보를 해당 필드에 넣는다. 
+                     document.getElementById("address").value = fullAddr; 
+                     // 주소로 상세 정보를 검색 
+                     } 
+                  }).open(); 
+               }
+
+               function sample1_execDaumPostcode() { 
+                  new daum.Postcode({ 
+                     oncomplete: function(data) { 
+                  // 각 주소의 노출 규칙에 따라 주소를 조합한다. 
+                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다. 
+                  var fullAddr = data.address; 
+                  // 최종 주소 변수 
+                  var extraAddr = ''; 
+                  // 조합형 주소 변수 // 기본 주소가 도로명 타입일때 조합한다. 
+                  if(data.addressType === 'R'){ 
+                     //법정동명이 있을 경우 추가한다. 
+                     if(data.bname !== ''){ extraAddr += data.bname; } 
+                     // 건물명이 있을 경우 추가한다. 
+                     if(data.buildingName !== ''){ extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName); } 
+                     // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다. 
+                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : ''); } 
+                     // 주소 정보를 해당 필드에 넣는다. 
+                     document.getElementById("address1").value = fullAddr; 
+                     // 주소로 상세 정보를 검색 
+                     } 
+                  }).open(); 
+               }
+
+               function sample2_execDaumPostcode() { 
+                  new daum.Postcode({ 
+                     oncomplete: function(data) { 
+                  // 각 주소의 노출 규칙에 따라 주소를 조합한다. 
+                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다. 
+                  var fullAddr = data.address; 
+                  // 최종 주소 변수 
+                  var extraAddr = ''; 
+                  // 조합형 주소 변수 // 기본 주소가 도로명 타입일때 조합한다. 
+                  if(data.addressType === 'R'){ 
+                     //법정동명이 있을 경우 추가한다. 
+                     if(data.bname !== ''){ extraAddr += data.bname; } 
+                     // 건물명이 있을 경우 추가한다. 
+                     if(data.buildingName !== ''){ extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName); } 
+                     // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다. 
+                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : ''); } 
+                     // 주소 정보를 해당 필드에 넣는다. 
+                     document.getElementById("address2").value = fullAddr; 
+                     // 주소로 상세 정보를 검색 
+                     } 
+                  }).open(); 
+               }
+
+   $('body').on('click', '[name=bookmark_submit]', function() {
+      data = $(this).parent().serialize()
+      console.log(data);
+      $.ajax({
+         url: '/electrocar_c/bmadd/',
+         data: data,
+         success: function(res) {
+            // pass
          }
-      });
-   }
+      })
+      return false;
+   });
+
+   // $('#bookmark-btn').click(function(){
+   //    var stat_name = $('#bookmark-btn').val();
+   //    for (i=0; i<res.length; i++) {
+   //       if (res[i].statNm == stat_name) {
+   //          var target = res[i];
+   //          latlng = new kakao.maps.LatLng(res[i].lat, res[i].lng);
+   //          }
+   //       }
+   //    map.setLevel(6)
+   //    map.panTo(latlng)
+   //    }
+   // );
+
 
    $('#search-btn').click(function() {
       var sido = $('#sido1').val();
       var goo = $('#gugun1').val();
-
       $.ajax({
          url: '/electrocar/mapdata/',
          data: {
@@ -568,28 +678,30 @@ var $table = $('#table');
                   }  
                   else if (res[i].chagertype == 02) {
                      var chgerType = "AC 완속"
-                     var carType = "몰라"
+                     var carType = "집에서 충전하세요 ~~ ^^"
                   }
                   else if (res[i].chagertype == 03) {
                      var chgerType = "DC 차데모" + "<br>" + "AC 3상"
-                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "SM3 ZE"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "SM3Z.E., 테슬라 모델"
                   }
                   else if (res[i].chagertype == 04) {
                      var chgerType = "DC 콤보"
-                     var carType = "코나, 스파크, 볼트, i3"
+                     var carType = "코나, 스파크, 볼트, i3, 아이오닉, 니로"
                   }
                   else if (res[i].chagertype == 05) {
                      var chgerType = "DC 차데모" + "<br>" + "DC 콤보"
-                     var carType = "레이, 쏘울, 아이오닉" + "<br>" + "코나, 스파크, 볼트, i3"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉, 니로"
                   }
                   else if (res[i].chagertype == 06) {
                      var chgerType = "DC 차데모" + "<br>" + "AC 3상" + "<br>" + "DC 콤보"
-                     var carType = "레이, 쏘울, 아이오닉" + "<br>" +  "SM3 ZE" + "<br>" + "코나, 스파크, 볼트, i3"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" +  "SM3Z.E., 테슬라 모델" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉, 니로"
                   }
                   else if (res[i].chagertype == 07) {
                      var chgerType = "AC 3상"
-                     var carType = "SM3 ZE"
+                     var carType = "SM3Z.E., 테슬라 모델"
                   }
+
+
 
                var content_table = ''
                var l = 0
@@ -606,11 +718,11 @@ var $table = $('#table');
                      '</tr>'
                   }
                }
+         
 
-               var select_car = 
 
-               
-               
+
+
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
                '        <div class="title">' + 
@@ -621,8 +733,10 @@ var $table = $('#table');
                '            <div class="desc">' + 
                '                <div class="ellipsis">' + res[i].address + '</div>' + 
                '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
-               '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
-                                '<div id="bookmark">즐겨찾기에 추가</div>' +
+               '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' +
+               '<form method="get" action="/electrocar_c/bmadd/" class="overlay_form">' +
+               '<input name="station_input" type="hidden" value="' + res[i].statNm + '">' +
+               '<input name="bookmark_submit" type="submit" value="즐겨찾기 등록">' + '</form>' + //session.useremail , res[i].address
                            '<table class="rwd-table">' +
                                  '<tr>' +
                                     '<th>Index</th>' +
@@ -637,25 +751,15 @@ var $table = $('#table');
                            '<div id="km">' +
                               '<div id="ad_line3"></div>' +
                               '<p class = "ktitle">충전소 거리 계산</p>' + '<br>' +
-                              '<input class = "inputhd" id="address" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + 
+                              '<input class = "inputhd" id="address" onclick="execDaumPostcode()" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + 
                               '<button id="cal" onclick="get_km(this)">Cal</button>' + '<br>' +
                               '<p id="result">' + '해당 충전소까지의 거리입니다.' + '</p>' + '<br>' +
                               '<p class = "ktitle">주행요금</p>' + '<br>' + 
-                                 '<select class = "inputcar">' +
-                                    '<option value="기본연비">기본값(5.5km/kWh)</option>' +
-                                    '<option value="코나">코나</option>' +
-                                    '<option value="레이">레이</option>' +
-                                    '<option value="쏘울">쏘울</option>' +
-                                    '<option value="아이오닉">아이오닉</option>' +
-                                    '<option value="볼트">볼트</option>' +
-                                    '<option value="SM3Z.E.">SM3Z.E.</option>' +
-                                    '<option value="i3">i3</option>' +
-                                    '<option value="스파크">스파크</option>' +
-                                 '</select>' + '<br>' +
+                              $('#carcharger_list').html() + 
                               '<div id="ad_line2"></div>' +
-                              '<input class = "inputhd" id="address1" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + '</br>' +
+                              '<input class = "inputhd" id="address1" onclick="sample1_execDaumPostcode()" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + '</br>' +
                               '<div id="ad_line2"></div>' +
-                              '<input class = "inputhd" id="address2" type="text" size=50 placeholder="도착 지점을 입력해주세요.">' + '<br>' +
+                              '<input class = "inputhd" id="address2" onclick="sample2_execDaumPostcode()" type="text" size=50 placeholder="도착 지점을 입력해주세요.">' + '<br>' +
                               '<div id="ad_line2"></div>' +
                               '<div>' + 
                                  '<p id="result2">'  + '해당 거리까지의 예상 주행요금입니다.' + '</p>' + '<br>' +
@@ -734,7 +838,6 @@ var $table = $('#table');
       success: function(res) {
          marker_list = new Array();
          overlay_list = new Array();      
-
          $('#map').empty();
          console.log('res', res)
          var container = document.getElementById('map');
@@ -742,6 +845,20 @@ var $table = $('#table');
             center: new kakao.maps.LatLng(res[0].lat, res[0].lng),
             level: 3
          };
+
+         $('.bookmark-btn').click(function(){
+            var stat_name = $(this).val();
+            console.log(stat_name);
+            for (i=0; i<res.length; i++) {
+               if (res[i].statNm == stat_name) {
+                  var target = res[i];
+                  latlng = new kakao.maps.LatLng(res[i].lat, res[i].lng);
+               }
+            }
+            map.setLevel(6)
+            map.panTo(latlng)
+            }
+         );
 
          var map = new kakao.maps.Map(container, options);
 
@@ -847,12 +964,14 @@ var $table = $('#table');
             (function(idx) {
                kakao.maps.event.addListener(marker_list[idx], 'click',function(){
                   map.setLevel(6)
-                  var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.065, res[idx].lng);
+                  var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.01, res[idx].lng);
                   console.log(res[idx].lat, res[idx].lat-1) 
                   map.panTo(moveLatLon)
                });
             })(i)
             
+            
+
          }
          function setBounds() {
             map.setBounds(bounds);

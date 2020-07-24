@@ -4,7 +4,8 @@ from django.urls import path
 # from . import data
 from django.template import loader
 from bs4 import BeautifulSoup
-from .models import Sido, Goo
+from .models import Sido, Goo, Carcharger
+from customer.models import Bookmark
 import smtplib
 from email.mime.text import MIMEText
 
@@ -16,6 +17,8 @@ from selenium import webdriver
 # import pyautogui
 from bs4 import BeautifulSoup
 from datetime import datetime
+
+import re
 
 
 def add(request):
@@ -73,14 +76,13 @@ def add2(request):
     driver = webdriver.Chrome('chromedriver.exe', chrome_options=chrome_options)
 
     # driver.close() #메모리 정리
+    
 
     start = input_address1
     finish = input_address2
     data = []
 
-
-   
-
+    load = "로딩 중..."
 
     driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
     delay = 3
@@ -108,22 +110,28 @@ def add2(request):
 
     if input_car == "기본연비":
         cal_re = ( 255.7 / 5.5 ) * km2
-    elif input_car == "코나":
+    elif input_car == "현대 코나":
         cal_re = ( 255.7 / 5.6 ) * km2
-    elif input_car == "레이":
+    elif input_car == "기아 레이":
         cal_re = ( 255.7 / 5.0 ) * km2
-    elif input_car == "쏘울":
+    elif input_car == "기아 쏘울":
         cal_re = ( 255.7 / 5.4 ) * km2
-    elif input_car == "아이오닉":
+    elif input_car == "현대 아이오닉":
         cal_re = ( 255.7 / 6.3 ) * km2
-    elif input_car == "볼트":
+    elif input_car == "쉐보레 볼트":
         cal_re = ( 255.7 / 5.5 ) * km2
-    elif input_car == "SM3Z.E.":
+    elif input_car == "기아 니로":
+        cal_re = ( 255.7 / 5.3 ) * km2
+    elif input_car == "르노삼성 SM3Z.E.":
         cal_re = ( 255.7 / 4.5 ) * km2
-    elif input_car == "i3":
+    elif input_car == "BMW i3":
         cal_re = ( 255.7 / 5.4 ) * km2
-    elif input_car == "스파크":
+    elif input_car == "쉐보레 스파크":
         cal_re = ( 255.7 / 6.0 ) * km2
+    elif input_car == "테슬라 모델X":
+        cal_re = ( 255.7 / 3.4 ) * km2
+    elif input_car == "테슬라 모델SP":
+        cal_re = ( 255.7 / 3.8 ) * km2
 
     cal_re = int(cal_re)
 
@@ -131,11 +139,13 @@ def add2(request):
     return JsonResponse({'cal_re' : cal_re }, safe=False)
 
 def map(request):
+    carcharger_list = Carcharger.objects.order_by('id')
+    bookmark_list = Bookmark.objects.order_by('id')
     # sido_list = Sido.objects.order_by('sido_name')
     # seoul = Sido.objects.get(id=1)
     # goo_list = Goo.objects.filter(sido=seoul)
 
-    return render(request, 'map/map.html')
+    return render(request, 'map/map.html', {'carcharger_list' : carcharger_list, 'bookmark_list' : bookmark_list})
 
 def map_data(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=%2FuulHEenTm5AaXHhdM5TCK3IG6AkNr5%2BQeE1QH1tBNBPYe%2FDSWYlpahKtXBwo7U4xn1T8pNhgH3t7zwTGljWqQ%3D%3D'
@@ -157,7 +167,7 @@ def map_data(request):
         if search_str in str(tag.select_one('addr').text):
             chargespot = {"statNm" : "" , "address" : "","lat" : "" , "lng" : "", "chger_id" : "" ,
                          "chger_type" : "", "use_time" : "", "busi_nm": "", "busi_call" : "",
-                         "stat" : "", }
+                         "stat" : "" }
             chargespot["statNm"] = str(tag.select_one('statNm').text)
             chargespot["address"] = str(tag.select_one('addr').text)
             chargespot["lat"] = str(tag.select_one('lat').text)
