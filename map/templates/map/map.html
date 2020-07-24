@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html>
 	<style>
+      #bookmark-btn {
+      font-family: "Montserrat", sans-serif;
+      cursor: pointer;
+      width: 300px;
+      height: 40px;
+      font-size: 1rem;
+      background-color: var(--alt-color);
+      color: #fff;
+      outline: none;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+         left: 20px;
+         top: 1px;
+         bottom: 10px;
+      }
+
 		.wrap {position: absolute;left: 0;bottom: 40px;width: 500px;height: 300px;margin-left: -260px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
 		.wrap * {padding: 0;margin: 0;}
 		.wrap .info {width: 500px; height: 288px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
@@ -290,14 +308,11 @@
          width: 17px;
          height: 17px;
       }
-
-
-
    </style>
    
    <head>
       <meta charset="utf-8"/>
-      <title>주소로 검색</title>
+      <title>Electric Vehicles, Everyone's Network</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="">
@@ -399,9 +414,6 @@
             <!-- <li class="nav-item">
               <a class="nav-link" href="#">Services</a>
             </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="#">Bookmark</a>
-            </li>
           </ul>
        
       </div>
@@ -421,8 +433,17 @@
             <br>
             <br>
          </div>
-         <div id="map" style="width:950px;height:530px; margin:auto;">
-         
+         <div id="map" style="width:950px;height:530px; margin:auto;"></div>
+         <div style="width:300px; height:500px;">
+            <br>
+            <p style="font-size:20px;">자주 가는 충전소</p>
+            <ul>
+               {% for bookmark in bookmark_list %}
+                  {% if bookmark.user_id_id == request.session.userid %}
+                     <button class='bookmark-btn' id='bookmark-btn' value="{{bookmark.bookmark_station}}">{{bookmark.bookmark_station}}</button><br><br>
+                  {% endif %}
+               {% endfor %}
+            </ul>
          </div>
       </div>
    </div>
@@ -587,6 +608,33 @@ var $table = $('#table');
                   }).open(); 
                }
 
+   $('body').on('click', '[name=bookmark_submit]', function() {
+      data = $(this).parent().serialize()
+      console.log(data);
+      $.ajax({
+         url: '/electrocar_c/bmadd/',
+         data: data,
+         success: function(res) {
+            // pass
+         }
+      })
+      return false;
+   });
+
+   // $('#bookmark-btn').click(function(){
+   //    var stat_name = $('#bookmark-btn').val();
+   //    for (i=0; i<res.length; i++) {
+   //       if (res[i].statNm == stat_name) {
+   //          var target = res[i];
+   //          latlng = new kakao.maps.LatLng(res[i].lat, res[i].lng);
+   //          }
+   //       }
+   //    map.setLevel(6)
+   //    map.panTo(latlng)
+   //    }
+   // );
+
+
    $('#search-btn').click(function() {
       var sido = $('#sido1').val();
       var goo = $('#gugun1').val();
@@ -653,6 +701,8 @@ var $table = $('#table');
                      var carType = "SM3Z.E., 테슬라 모델"
                   }
 
+
+
                var content_table = ''
                var l = 0
                for (var j=0; j<res.length;j++) {
@@ -683,8 +733,10 @@ var $table = $('#table');
                '            <div class="desc">' + 
                '                <div class="ellipsis">' + res[i].address + '</div>' + 
                '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
-               '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
-                                '<div id="bookmark">즐겨찾기에 추가</div>' +
+               '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' +
+               '<form method="get" action="/electrocar_c/bmadd/" class="overlay_form">' +
+               '<input name="station_input" type="hidden" value="' + res[i].statNm + '">' +
+               '<input name="bookmark_submit" type="submit" value="즐겨찾기 등록">' + '</form>' + //session.useremail , res[i].address
                            '<table class="rwd-table">' +
                                  '<tr>' +
                                     '<th>Index</th>' +
@@ -794,6 +846,20 @@ var $table = $('#table');
             level: 3
          };
 
+         $('.bookmark-btn').click(function(){
+            var stat_name = $(this).val();
+            console.log(stat_name);
+            for (i=0; i<res.length; i++) {
+               if (res[i].statNm == stat_name) {
+                  var target = res[i];
+                  latlng = new kakao.maps.LatLng(res[i].lat, res[i].lng);
+               }
+            }
+            map.setLevel(6)
+            map.panTo(latlng)
+            }
+         );
+
          var map = new kakao.maps.Map(container, options);
 
          //지도 재설정 범위 정보 latlngbounds
@@ -898,12 +964,14 @@ var $table = $('#table');
             (function(idx) {
                kakao.maps.event.addListener(marker_list[idx], 'click',function(){
                   map.setLevel(6)
-                  var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.065, res[idx].lng);
+                  var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.01, res[idx].lng);
                   console.log(res[idx].lat, res[idx].lat-1) 
                   map.panTo(moveLatLon)
                });
             })(i)
             
+            
+
          }
          function setBounds() {
             map.setBounds(bounds);

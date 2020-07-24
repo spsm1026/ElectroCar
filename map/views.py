@@ -5,6 +5,7 @@ from django.urls import path
 from django.template import loader
 from bs4 import BeautifulSoup
 from .models import Sido, Goo, Carcharger
+from customer.models import Bookmark
 import smtplib
 from email.mime.text import MIMEText
 
@@ -139,11 +140,12 @@ def add2(request):
 
 def map(request):
     carcharger_list = Carcharger.objects.order_by('id')
+    bookmark_list = Bookmark.objects.order_by('id')
     # sido_list = Sido.objects.order_by('sido_name')
     # seoul = Sido.objects.get(id=1)
     # goo_list = Goo.objects.filter(sido=seoul)
 
-    return render(request, 'map/map.html', {'carcharger_list' : carcharger_list})
+    return render(request, 'map/map.html', {'carcharger_list' : carcharger_list, 'bookmark_list' : bookmark_list})
 
 def map_data(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=%2FuulHEenTm5AaXHhdM5TCK3IG6AkNr5%2BQeE1QH1tBNBPYe%2FDSWYlpahKtXBwo7U4xn1T8pNhgH3t7zwTGljWqQ%3D%3D'
@@ -165,7 +167,7 @@ def map_data(request):
         if search_str in str(tag.select_one('addr').text):
             chargespot = {"statNm" : "" , "address" : "","lat" : "" , "lng" : "", "chger_id" : "" ,
                          "chger_type" : "", "use_time" : "", "busi_nm": "", "busi_call" : "",
-                         "stat" : "", }
+                         "stat" : "" }
             chargespot["statNm"] = str(tag.select_one('statNm').text)
             chargespot["address"] = str(tag.select_one('addr').text)
             chargespot["lat"] = str(tag.select_one('lat').text)
