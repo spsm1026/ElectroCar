@@ -8,7 +8,7 @@
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;&display=swap');
             </style>
-        <title>서울시 전기차 충전소 현황</title>
+        <title>EV'EN_2020</title>
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
@@ -67,19 +67,17 @@
                 <div class="row">
                     <div class="col-md-10 col-lg-8 mx-auto text-center">
                         <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
-                        <h2 class="text-black mb-5">문의사항을 남겨주세요.</h2>
+                        <h2 class="text-black mb-5" id = "hi" href="#">dd</h2>
+                  
+                            <!-- {% for data in data_list %}
+                            <a href="{% url 'data_list' %}"></a>
+                           {% endfor %} -->
                         <form class="form-inline d-flex" action="http://localhost:8000/electrocar/index/" method="GET">
-                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="email" placeholder="이메일을 입력하시오." />                          
-                            <label for="subject">메일제목:</label>
-                            <input type="text" name='subject' id='subject' placeholder='제목을 입력하세요'>
-                            <textarea id="mail_content" cols="70" rows="7" placeholder='메일내용을 입력하세요'></textarea>
-
-                            <button class="btn btn-primary mx-auto" type="submit" id="btn1" style="-webkit-text-fill-color: #000000;">등록</button>
+                            <!-- <button class="btn btn-primary mx-auto" type="submit" id="btn1" style="-webkit-text-fill-color: #000000;">등록</button>
                             <script>
                                 $('#btn1').click(() => {
                                     alert('전송 완료 ! ')
-                                })
-                            </script>
+                                }) -->
                         </form>
                     </div>
                 </div>

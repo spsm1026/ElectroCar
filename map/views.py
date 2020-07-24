@@ -181,19 +181,35 @@ def map_data(request):
     return JsonResponse(chargespot_list, safe=False)
 
 def index(request):
+    # data_list = get_html()
+    # return render(request,'map/index.html', {'data_list':data_list})
     return render(request,'map/index.html')
 
-def sendMail(from_email, to_email, msg):
-    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    smtp.login(from_email, 'mvewisjmzdhunusn') 
-    msg = MIMEText(msg)
-    msg['Subject'] = '가입인사'
-    msg['To'] = to_email
-    smtp.sendmail(from_email, to_email, msg.as_string())
-    smtp.quit()
-
-def sendMail_2(request):
-    sendMail("22@gmail.com","22@gmail.com","완료 되었습니다.")
-    return render(request, 'map/index.html','')
 def test(request):
     return render(request,'map/test.html')
+
+# def get_html():
+#     data_list = []
+#     html = ''
+#     res= requests.get()
+#     if res.status_code == 200:
+#         res.encoding = None
+#         html = res.text
+#         return html
+
+#     result = get_html('https://search.naver.com/search.naver?where=news&sm=tab_jum&query=%EC%A0%84%EA%B8%B0%EC%B0%A8+%EB%89%B4%EC%8A%A4')
+#     soup= BeautifulSoup(result,'html.parser')
+#     trs = soup.select('.type01>li')
+#     count = 0
+#     for tr in trs:
+#         title = tr.select_one('dt > a')
+#         if title:
+#             data = {'text':title.text, 'link':title.get('href')}
+#             print(title.text)
+#             print(title.get('href'))
+#             data_list.append(data)
+#         count += 1
+#         if count >= 5:
+#             break
+
+#     return data_list

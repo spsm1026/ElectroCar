@@ -8,4 +8,5 @@ urlpatterns = [
     path('mapdata/', views.map_data, name="map_data"),
     path('index/', views.index, name="index"),
     path('test/', views.test, name="test"),
+    # path('get_html/', views.get_html, name="get_html"),
 ]
