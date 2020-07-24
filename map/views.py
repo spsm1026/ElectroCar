@@ -4,7 +4,7 @@ from django.urls import path
 # from . import data
 from django.template import loader
 from bs4 import BeautifulSoup
-from .models import Sido, Goo
+from .models import Sido, Goo, Carcharger
 import smtplib
 from email.mime.text import MIMEText
 
@@ -131,11 +131,12 @@ def add2(request):
     return JsonResponse({'cal_re' : cal_re }, safe=False)
 
 def map(request):
+    carcharger_list = Carcharger.objects.order_by('id')
     # sido_list = Sido.objects.order_by('sido_name')
     # seoul = Sido.objects.get(id=1)
     # goo_list = Goo.objects.filter(sido=seoul)
 
-    return render(request, 'map/map.html')
+    return render(request, 'map/map.html', {'carcharger_list' : carcharger_list})
 
 def map_data(request):
     url ='http://open.ev.or.kr:8080/openapi/services/EvCharger/getChargerInfo?serviceKey=%2FuulHEenTm5AaXHhdM5TCK3IG6AkNr5%2BQeE1QH1tBNBPYe%2FDSWYlpahKtXBwo7U4xn1T8pNhgH3t7zwTGljWqQ%3D%3D'

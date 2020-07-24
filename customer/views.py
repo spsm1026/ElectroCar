@@ -45,14 +45,25 @@ def register(request):
 # 로그인
 def login(request):
     car_charge_list = Carcharger.objects.order_by('id')
+    user_list = User.objects.order_by('id')
     if request.method == 'POST':
         useremail = request.POST['useremail']
         password = request.POST['password']
+
+
+
+        for user_i in user:
+            if user_i.useremail == user.email:
+                user_car = user_i.cars
+                
+            
+
         try:
             user = User.objects.get(useremail = useremail, password = password)
             # user 안에 입력한 값이 있나 확인 후 메인페이지로 이동
             if user:
                 request.session['useremail'] = useremail
+                request.session['user_car'] = user_car
                 # del request.session['redirect_uri']
                 return render(request, 'customer/login_success.html')
             # return HttpResponseRedirect('/electrocar/home')

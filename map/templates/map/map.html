@@ -462,6 +462,23 @@
    <div id="map" style="width:700px;height:500px; margin:auto;">
    </div> -->
 
+   <div id = "carcharger_list"  style='display:none;'>
+      <select class = "inputcar">
+         <option value="기본연비">기본값(5.5km/kWh)</option>
+   
+      {% for car in carcharger_list %}
+         <option value="{{car.car_name}}" 
+            {% if request.session.carcharger_list == car.car_name %}
+               selected
+            {% endif %}
+         >        
+         {{car.car_name}}</option>
+      {% endfor %}
+   
+      </select>
+
+   </div>
+
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=42225d8b57506c6a81222e189874b805"></script>
@@ -572,19 +589,19 @@ var $table = $('#table');
                   }
                   else if (res[i].chagertype == 03) {
                      var chgerType = "DC 차데모" + "<br>" + "AC 3상"
-                     var carType = "블루온, 레이, 쏘울, 아이오닉" + "<br>" + "SM3 ZE"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "SM3 ZE"
                   }
                   else if (res[i].chagertype == 04) {
                      var chgerType = "DC 콤보"
-                     var carType = "코나, 스파크, 볼트, i3"
+                     var carType = "코나, 스파크, 볼트, i3, 아이오닉"
                   }
                   else if (res[i].chagertype == 05) {
                      var chgerType = "DC 차데모" + "<br>" + "DC 콤보"
-                     var carType = "레이, 쏘울, 아이오닉" + "<br>" + "코나, 스파크, 볼트, i3"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉"
                   }
                   else if (res[i].chagertype == 06) {
                      var chgerType = "DC 차데모" + "<br>" + "AC 3상" + "<br>" + "DC 콤보"
-                     var carType = "레이, 쏘울, 아이오닉" + "<br>" +  "SM3 ZE" + "<br>" + "코나, 스파크, 볼트, i3"
+                     var carType = "레이, 쏘울, 아이오닉, Leaf" + "<br>" +  "SM3 ZE" + "<br>" + "코나, 스파크, 볼트, i3, 아이오닉"
                   }
                   else if (res[i].chagertype == 07) {
                      var chgerType = "AC 3상"
@@ -607,10 +624,20 @@ var $table = $('#table');
                   }
                }
 
-               var select_car = 
 
                
-               
+                  // var select_car = ''
+                  // var select_options = ''
+                  // for (var i=0; i< carcharger_list.legnth; i++){
+                  //    select_options += '<option value="{{carcharger_list.i.car_name}}">' + {{ carcharger_list.i.car_name }} + '</option>'
+                  // }
+                  // select_car = '<select class = "inputcar">' + select_options + '</select>' + '<br>' ;
+                 
+               //    if (request.session.user_car) { 
+               // }
+
+
+
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
                '        <div class="title">' + 
@@ -641,17 +668,7 @@ var $table = $('#table');
                               '<button id="cal" onclick="get_km(this)">Cal</button>' + '<br>' +
                               '<p id="result">' + '해당 충전소까지의 거리입니다.' + '</p>' + '<br>' +
                               '<p class = "ktitle">주행요금</p>' + '<br>' + 
-                                 '<select class = "inputcar">' +
-                                    '<option value="기본연비">기본값(5.5km/kWh)</option>' +
-                                    '<option value="코나">코나</option>' +
-                                    '<option value="레이">레이</option>' +
-                                    '<option value="쏘울">쏘울</option>' +
-                                    '<option value="아이오닉">아이오닉</option>' +
-                                    '<option value="볼트">볼트</option>' +
-                                    '<option value="SM3Z.E.">SM3Z.E.</option>' +
-                                    '<option value="i3">i3</option>' +
-                                    '<option value="스파크">스파크</option>' +
-                                 '</select>' + '<br>' +
+                              $('#carcharger_list').html() + 
                               '<div id="ad_line2"></div>' +
                               '<input class = "inputhd" id="address1" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + '</br>' +
                               '<div id="ad_line2"></div>' +
