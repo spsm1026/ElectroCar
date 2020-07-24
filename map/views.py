@@ -76,17 +76,13 @@ def add2(request):
     driver = webdriver.Chrome('chromedriver.exe', chrome_options=chrome_options)
 
     # driver.close() #메모리 정리
+    
 
     start = input_address1
     finish = input_address2
     data = []
 
-    
-
-
-
-   
-
+    load = "로딩 중..."
 
     driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
     delay = 3
