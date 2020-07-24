@@ -19,9 +19,15 @@ def home2(request):
 def find(request):
     return render(request, 'customer/new_pw.html')
 
+def session_save(request, useremail, cars):
+    request.session['useremail'] = useremail
+    request.session['cars'] = cars
+
+
+
 # 회원가입
 def register(request):
-    car_charge_list = Carcharger.objects.order_by('id')
+    car_charge_list = Carcharger.objects.order_by('id') 
     if request.method == 'POST':
 
         # 입력값이 같다면 DB에 저장
@@ -43,14 +49,21 @@ def register(request):
 # 로그인
 def login(request):
     car_charge_list = Carcharger.objects.order_by('id')
+    user_list = User.objects.order_by('id')
     if request.method == 'POST':
         useremail = request.POST['useremail']
         password = request.POST['password']
+
+        for user_i in user_list:
+            if user_i.useremail == useremail:
+                user_car = user_i.cars
+
         try:
             user = User.objects.get(useremail = useremail, password = password)
             # user 안에 입력한 값이 있나 확인 후 메인페이지로 이동
             if user:
-                request.session['useremail'] = useremail
+                session_save(request, useremail, user_car)
+                print(user_car)
                 return render(request, 'customer/login_success.html')
             # return HttpResponseRedirect('/electrocar/home')
         except :
