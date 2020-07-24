@@ -10277,6 +10277,7 @@ body {
 }
 .about-section p {
   margin-bottom: 5rem;
+
 }
 
 .projects-section {
@@ -10363,5 +10364,5 @@ body {
 }
 
 .footer {
-  padding: 5rem 0;
+  padding: 0.6rem 0;
 }
