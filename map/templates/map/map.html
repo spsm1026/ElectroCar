@@ -148,8 +148,8 @@
       #notify {
          font-family: "Nanum Gothic", sans-serif;
          font-size: 10px;
-         position: relative;
-         text-align: center; 
+         
+         left: 60px;
          bottom: 10px;
          /* padding-bottom: 5px; */
       }
@@ -188,7 +188,7 @@
       border: 1px solid transparent;
       border-radius: 20px;
       transition: all 0.3s ease;
-      position: relative;
+      position: absolute;
          left: 280px;
          bottom: 57px;
       }
@@ -360,8 +360,8 @@
    <!-- Navigation -->
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-         
-            <p href="http://localhost:8000/electrocar/map" class="bouncer" contenteditable>Electric Vehicle, Everyone's Network </p>
+         <div>
+         <p href="http://localhost:8000/electrocar/map" class="bouncer" style="margin-left:-50px;" contenteditable>Electric Vehicle, Everyone's Network </p>
          </div>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -369,14 +369,34 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+            {% if request.session.useremail %}
             <li class="nav-item active">
-              <a class="nav-link" href="http://localhost:8000/electrocar/index">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="http://localhost:8000/electrocar_c/login">Log in</a>
-            </li>
+               <a class="nav-link" href="http://localhost:8000/electrocar/index">Home
+                 <span class="sr-only">(current)</span>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="#">Bookmark</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="#" id="logout2">Logout</a>
+             </li>
+             <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                        <script>
+                        $("#logout2").on("click",function() {
+                            location.href = "/electrocar_c/logout";
+                        })
+                        </script>
+            {% else %}
+            <li class="nav-item active">
+               <a class="nav-link" href="http://localhost:8000/electrocar/index">Home
+                 <span class="sr-only">(current)</span>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="http://localhost:8000/electrocar_c/register">Login</a>
+             </li>
+            {% endif %}  
             <!-- <li class="nav-item">
               <a class="nav-link" href="#">Services</a>
             </li> -->
@@ -586,6 +606,10 @@ var $table = $('#table');
                      '</tr>'
                   }
                }
+
+               var select_car = 
+
+               
                
                var content = '<div class="wrap">' + 
                '    <div class="info">' + 
@@ -598,6 +622,7 @@ var $table = $('#table');
                '                <div class="ellipsis">' + res[i].address + '</div>' + 
                '                <div class="jibun ellipsis">' + res[i].busi_nm + '관리 / ' + res[i].use_time + '</div>' + 
                '                <div><a href="https://map.kakao.com/link/roadview/'+link+'"  target="_blank" class="link">Road View</a></div>' + 
+                                '<div id="bookmark">즐겨찾기에 추가</div>' +
                            '<table class="rwd-table">' +
                                  '<tr>' +
                                     '<th>Index</th>' +
@@ -611,11 +636,11 @@ var $table = $('#table');
                            '<div id="ad_line"></div>' +
                            '<div id="km">' +
                               '<div id="ad_line3"></div>' +
-                              '<p class = "ktitle">충전소 거리 계산</p>' +
+                              '<p class = "ktitle">충전소 거리 계산</p>' + '<br>' +
                               '<input class = "inputhd" id="address" type="text" size=50 placeholder="출발 지점을 입력해주세요.">' + 
-                              '<button id="cal" onclick="get_km(this)">Cal</button>' +
+                              '<button id="cal" onclick="get_km(this)">Cal</button>' + '<br>' +
                               '<p id="result">' + '해당 충전소까지의 거리입니다.' + '</p>' + '<br>' +
-                              '<p class = "ktitle">주행요금</p>' +
+                              '<p class = "ktitle">주행요금</p>' + '<br>' + 
                                  '<select class = "inputcar">' +
                                     '<option value="기본연비">기본값(5.5km/kWh)</option>' +
                                     '<option value="코나">코나</option>' +
@@ -633,7 +658,7 @@ var $table = $('#table');
                               '<input class = "inputhd" id="address2" type="text" size=50 placeholder="도착 지점을 입력해주세요.">' + '<br>' +
                               '<div id="ad_line2"></div>' +
                               '<div>' + 
-                                 '<p id="result2">'  + '해당 거리까지의 예상 주행요금입니다.' + '</p>' +
+                                 '<p id="result2">'  + '해당 거리까지의 예상 주행요금입니다.' + '</p>' + '<br>' +
                                  '<button id="cal2" onclick="get_km2()">Cal</button>' + '<br>' +
                               '<div>' + 
                               '<p id="notify">'  + '해당 요금은 각 차종별 연비와 환경부 충전소 기준의 가격으로 계산되었습니다.' + '</p>' +
@@ -823,7 +848,7 @@ var $table = $('#table');
                kakao.maps.event.addListener(marker_list[idx], 'click',function(){
                   map.setLevel(6)
                   var moveLatLon = new kakao.maps.LatLng(Number(res[idx].lat) + 0.065, res[idx].lng);
-                  console.log(res[idx].lat, res[idx].lat-1)
+                  console.log(res[idx].lat, res[idx].lat-1) 
                   map.panTo(moveLatLon)
                });
             })(i)

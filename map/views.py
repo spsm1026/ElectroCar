@@ -21,22 +21,21 @@ from datetime import datetime
 def add(request):
     input_address = request.GET.get('input_address')
     marker_address = request.GET.get('marker_address')
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('lang=ko_KR')
 
-    driver = wd.Chrome(executable_path='chromedriver.exe')
-
+   
     # driver.close() #메모리 정리
 
     start = input_address 
     finish = marker_address
     data = []
 
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('headless')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('lang=ko_KR')
 
 
-    driver = webdriver.Chrome('chromedriver.exe')
+    driver = webdriver.Chrome('chromedriver.exe', chrome_options=chrome_options)
 
     driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
     delay = 3
@@ -66,8 +65,12 @@ def add2(request):
     input_address1 = request.GET.get('input_address1')
     input_address2 = request.GET.get('input_address2')
     input_car = request.GET.get('input_car')
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('lang=ko_KR')
 
-    driver = wd.Chrome(executable_path='chromedriver.exe')
+    driver = webdriver.Chrome('chromedriver.exe', chrome_options=chrome_options)
 
     # driver.close() #메모리 정리
 
@@ -75,12 +78,9 @@ def add2(request):
     finish = input_address2
     data = []
 
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('headless')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('lang=ko_KR')
 
-    driver = webdriver.Chrome('chromedriver.exe')
+   
+
 
     driver.get('https://map.naver.com/v5/directions/-/-/-/mode?c=14107103.1786139,4494701.9630842,15,0,0,0,dh')
     delay = 3

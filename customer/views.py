@@ -44,6 +44,11 @@ def register(request):
         # DB에 데이터 저장후 로그인 화면으로 이동
         return render(request, 'customer/customer.html')
     # 로그인/회원가입 화면 보여주기
+
+    uri = request.META['HTTP_REFERER']
+    print('uri', uri)
+    request.session['redirect_uri'] = uri
+
     return render(request, 'customer/customer.html', {'car_charge_list' : car_charge_list})
 
 # 로그인
@@ -69,7 +74,6 @@ def login(request):
         except :
             # user 안에 입력한 값이 없을 경우 없다고 안내 후 로그인 페이지로 다시 이동
             return render(request, 'customer/login_fail.html')  
-       
     else:
         return render(request, 'customer/customer.html', {'car_charge_list' : car_charge_list})
 
