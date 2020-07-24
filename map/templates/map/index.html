@@ -28,7 +28,7 @@
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#" name = "logout" id="logout">Logout</a></li>
                         {% else %}
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="http://localhost:8000/electrocar_c/register/">Log in</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="http://localhost:8000/electrocar_c/register/">Bookmark</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link js-scroll-trigger" href="http://localhost:8000/electrocar_c/register/">Bookmark</a></li> -->
                         {% endif %}                      
                         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
                         <script>
@@ -71,7 +71,7 @@
                             {% for data in data_list %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 
-                                <a class="nav-link js-scroll-trigger" href="{{ data.link }}">
+                                <a class="nav-link js-scroll-trigger" href="{{ data.link }}" target="_blank">
                                     <span>{{ data.text}}</span> &nbsp;&nbsp;
                                     ✔</a>
                             </li>
@@ -92,7 +92,7 @@
         </section>
         
         <!-- Footer-->
-        <footer class="footer bg-black small text-center text-white-50"><div class="container">Copyright ©김바다.김우현.김영동.박상명 2020</div></footer>
+        <footer class="footer bg-black small text-center text-white-50"><div class="container">Copyright ©EV'EN 2020 by 일박삼김 </div></footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
