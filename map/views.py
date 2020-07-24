@@ -13,7 +13,7 @@ import requests
 import time
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
-import pyautogui
+# import pyautogui
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -188,28 +188,33 @@ def index(request):
 def test(request):
     return render(request,'map/test.html')
 
-# def get_html():
-#     data_list = []
-#     html = ''
-#     res= requests.get()
-#     if res.status_code == 200:
-#         res.encoding = None
-#         html = res.text
-#         return html
+import requests
 
-#     result = get_html('https://search.naver.com/search.naver?where=news&sm=tab_jum&query=%EC%A0%84%EA%B8%B0%EC%B0%A8+%EB%89%B4%EC%8A%A4')
-#     soup= BeautifulSoup(result,'html.parser')
-#     trs = soup.select('.type01>li')
-#     count = 0
-#     for tr in trs:
-#         title = tr.select_one('dt > a')
-#         if title:
-#             data = {'text':title.text, 'link':title.get('href')}
-#             print(title.text)
-#             print(title.get('href'))
-#             data_list.append(data)
-#         count += 1
-#         if count >= 5:
-#             break
+def get_html(url):
+    html = ''
+    res= requests.get(url)
+    if res.status_code == 200:
+        res.encoding = None
+        html = res.text
+    return html
 
-#     return data_list
+def Crawling(request):
+    data_list = []
+    result = get_html('https://search.naver.com/search.naver?where=news&sm=tab_jum&query=%EC%A0%84%EA%B8%B0%EC%B0%A8+%EB%89%B4%EC%8A%A4')
+    soup= BeautifulSoup(result,'html.parser')
+    trs = soup.select('.type01>li')
+    count = 0
+    print(trs)
+    for tr in trs:
+        print(tr)
+        title = tr.select_one('dt > a')
+        if title:
+            data = {'text':title.text, 'link':title.get('href')}
+            print(title.text)
+            print(title.get('href'))
+            data_list.append(data)
+        count += 1
+        if count >= 8:
+            break
+    print(data_list)
+    return render(request,'map/index.html', {'data_list':data_list})
