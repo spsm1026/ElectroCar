@@ -9,4 +9,4 @@ class User(models.Model):
 
 class Bookmark(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    bookmark_address = models.CharField(max_length=200)
+    bookmark_station = models.CharField(max_length=200)
